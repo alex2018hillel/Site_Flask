@@ -1,0 +1,26 @@
+C:\Program Files\Java\jdk1.8.0_121\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Common Files\Ulead Systems\MPEG;C:\Program Files (x86)\MKVtoolnix;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files\JetBrains;%MAVEN_HOME%\bin;%systemroot%\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd; C:\Intel\curl-7.62.0-win64-mingw\bin; C:\Users\i5\AppData\Roaming\Python\Python37\Scripts;%GRADLE_HOME%\bin;C:\Program Files\JetBrains;%MAVEN_HOME%\bin;%systemroot%\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd; C:\curl\bin;C:\Users\i5\AppData\Local\Programs\Python\Python37\Scripts;C:\Users\i5\AppData\Local\Programs\Python\Python37\
+tropp_alex
+A661957!
+
+postgres
+pass: 123
+port: 5432
+
+puthon3 -m venv env
+source env/bin/activate
+cd env/
+cd bin/
+cd ..
+
+pip install django
+django-admin stertproject name_web
+puthon manage.py runsrver 8686
+puthon manage.py createsuperuser
+Username(//////////): admin
+Email adress:
+Password:
+
+pip install  psycopg2
+
+pip install flask-sqlalchemy psycopg2
+pip freeze  > requirements.txt  (pip freeze --local > requirements.txt)
