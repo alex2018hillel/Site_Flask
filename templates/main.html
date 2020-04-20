@@ -9,15 +9,52 @@
 <form method="post" action="/add_message">
     <input type="text" name="text">
     <input type="text" name="tag">
+    <input type="text" name="data1">
     <button type="submit">Add message</button>
 </form>
 
 <h3>Messages list</h3>
 {% for message in messages %}
-<div>{{ message.text }}
-    {% for tag in message.tags %}}
-    <b>#{{ tag.text }}</b></div>
+    <div>{{ message.id }}#
+        <b>{{ message.text }}</b>
+
+    {% for tag in message.tags %}
+    <b>#{{ tag.text }}</b>
+    <b>#{{ message.data1 }}</b>
+    </div>
+    {% endfor %}
 {% endfor %}
 
+         <div>{{ data1 }}#</div>
+
+{% block content %}
+    <div class="container">
+    <h1>user</h1>
+      {% for user in users %}
+        <ul id="user.username">
+          <li>
+              <span class="field-name">User:</span>
+              <span class="field-value">{{ user.username }}</span>
+          </li>
+          <li>
+              <span class="field-name">Email:</span>
+              <span class="field-value">{{ user.email }}</span>
+          </li>
+          <li>
+              <span class="field-name">Created:</span>
+              <span class="field-value">{{ user.created }}</span>
+          </li>
+          <li>
+              <span class="field-name">Bio:</span>
+              <span class="field-value">{{ user.bio }}</span>
+          </li>
+          <li>
+              <span class="field-name">Admin:</span>
+              <span class="field-value">{{ user.admin }}</span>
+          </li>
+        </ul>
+      {% endfor %}
+    </div>
+{% endblock %}
 </body>
 </html>
