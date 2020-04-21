@@ -5,6 +5,21 @@
     <title>Main page</title>
 </head>
 <body>
+
+    <li class="ttr_menu_items_parent dropdown active"><a href="//sort/sort_by_data1" class="ttr_menu_items_parent_link_active"><span class="menuchildicon"></span>Сортировка  по data1
+        <hr class ="horiz_separator"/></a>
+    </li>
+
+
+    <div><form method="post" action="/sort/sort_by_data1">
+        <input type='submit' value="sort_by_data1">
+    </form>
+    </div>
+    <div><form method="post" action="/sort/sort_by_text">
+        <input type='submit' value="sort_by_text">
+    </form>
+    </div>
+
 <h2>Messages</h2>
 <form method="post" action="/add_message">
     <input type="text" name="text">
@@ -25,7 +40,7 @@
     {% endfor %}
 {% endfor %}
 
-         <div>{{ data1 }}#</div>
+         <div>{{ data0 }}#</div>
 
 {% block content %}
     <div class="container">

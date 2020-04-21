@@ -3,8 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:123@localhost/py_sweater'
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://myuser:123@localhost:5432/auto"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://postgres:123@localhost:5433/auto1"
+#app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://myuser:123@localhost:5432/auto"
 db = SQLAlchemy(app)
 
 
