@@ -173,7 +173,7 @@
         <div class="ttr_title_position">
             <h1 class="ttr_title_style ">
                 <a href="#">
-                    Милые животные
+                    AВТОСАЛОН
                 </a>
             </h1>
         </div>
@@ -199,7 +199,7 @@
             </div>
             <div class="menu-center collapse navbar-collapse">
                 <ul class="ttr_menu_items nav navbar-nav nav-justified">
-                    <li class="ttr_menu_items_parent dropdown active"><a href="index.html" class="ttr_menu_items_parent_link_active"><span class="menuchildicon"></span>Home
+                    <li class="ttr_menu_items_parent dropdown active"><a href="/" class="ttr_menu_items_parent_link_active"><span class="menuchildicon"></span>Home
                         <hr class ="horiz_separator"/></a>
                     </li>
                     <li class="ttr_menu_items_parent dropdown"><a href='/from_us' class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>About Us
@@ -224,14 +224,40 @@
 
 
 
+<div class="btn-group">
+    <form method="post" action="/sort/sort_by_name">
+    </form>
+    <form method="post" action="/sort/sort_by_price">
+    <button>sort_by_price</button>
+    </form>
+</div>
+
+
+
+<div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Segoe Marker&quot;;font-size:20px;color:#FFFFFF;">Consultant Services</span></p></div>
+<form method="post" action="/sort/sort_by_name">
+</form>
+    <input type='submit' value="sort_by_name">
+</div>
+<div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Segoe Marker&quot;;font-size:20px;color:#FFFFFF;">Consultant Services</span></p></div>
+<form method="post" action="/sort/sort_by_price">
+    <input type='submit' value="sort_by_price">
+</form>
+</div>
+
+<form action="" method="get">
+    <input name="s" placeholder="Поиск по сайту" type="search">
+    <button type="submit">Поиск</button>
+</form>
+
 <div id="ttr_page" class="container">
     <div id="ttr_content_and_sidebar_container">
         <div id="ttr_content">
             <div class="ttr_Index_html_row2 row">
-                {% for name in names %}
+                {% for car in cars %}
                 <div class="post_column col-lg-3 col-md-6 col-sm-6 col-xs-12">
                     <div class="ttr_Index_html_column20">
-                        <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p><img src={{ name[1] }} style="width:328px;height:252px;margin:0px 0px 0px 0px;font-family:Times New Roman;font-size:12px;" /></p></div>
+                        <div class="html_content" style="font-family:Times New Roman;font-size:12px;min-width: 300px;position: absolute;"><p><img src={{ car.photo }} style="height:252px;margin:0px 0px 0px 0px;font-family:Times New Roman;font-size:12px;" /></p></div>
                     </div>
                 </div>
                 <div class="clearfix visible-xs-block">
@@ -240,13 +266,13 @@
                     <div class="ttr_Index_html_column21">
                         <div class="html_content" style="font-family:Times New Roman;font-size:12px;">
                             <p style="margin:10px 0px 0px 0px;text-align:Center;line-height:13px;font-family:Times New Roman;font-size:12px;">
-                                <span style="font-family:&quot;Monotype Corsiva&quot;;font-style:italic;font-size:24px;color:#4E4E4E;">{{ name[0] }}</span></p>
-                            <p style="margin:10px 0px 0px 0px;text-align:Center;line-height:22px;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Microsoft Tai Le&quot;color:#959595;">{{ name[3] }}</span></p>
+                                <span style="font-family:&quot;Monotype Corsiva&quot;;font-style:italic;font-size:24px;color:#4E4E4E;">{{ car.head }}</span></p>
+                            <p style="margin:10px 0px 0px 0px;text-align:Center;line-height:22px;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Monotype Corsiva:&quot;color:#959595;">{{ car.price }}</span></p>
                             <p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><br /></p>
                             <p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><br /></p>
                             <p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><br /></p>
                             <p style="text-align:Center;font-family:Times New Roman;font-size:12px;">
-                            <form action="/user/{{ name[0] }}" style="width:300px;height:80px; align-content: center; margin:60px 40px 60px 40px enctype="multipart/form-data" method="POST">
+                            <form action="/user/{{ car.head }}" style='width:300px;height:80px; align-content: center; margin:60px 40px 60px 40px enctype="multipart/form-data' method="POST">
                             <input type="submit" class="btn btn-dark" value="ПОДРОБНЕЕ">
                             </form>
                             </p>

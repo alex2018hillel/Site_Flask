@@ -1,9 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-import psycopg2
-from psycopg2 import sql
-import postgresql
-from contextlib import closing
-
+from parse_olx import Cars, parser
 from flask import Flask, render_template, request, url_for, jsonify, redirect, session, g
 import os
 import json
@@ -32,30 +28,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:%(pw)s@%(host)s:%
 #app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://postgres:123@localhost:5432/site_flask"
 db = SQLAlchemy(app)
 
-conn = psycopg2.connect(
-    database="site_flask",
-    user="postgres",
-    password="123",
-    host="localhost",
-    port="5432"
-)
-
-with conn.cursor() as cursor:
-    conn.autocommit = True
-    values =('PDX', 'Portland'),
-    insert = sql.SQL('INSERT INTO users (login, password) VALUES {}').format(sql.SQL(',').join(map(sql.Literal, values))
-                                                                             )
-    cursor.execute(insert)
-cursor.close()
-conn.close()
-
-
-with closing(psycopg2.connect(dbname='site_flask', user='postgres',
-                              password='123', host='localhost')) as conn:
-    with conn.cursor() as cursor:
-        cursor.execute('SELECT * FROM users LIMIT 50')
-        for row in cursor:
-            print(row)
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -77,38 +49,27 @@ class Tag(db.Model):
 
 db.create_all()
 
-
 @app.route('/', methods=['GET'])
 def index():
-    num = request.args.get('num')
-    if num:
-        session['data'] = dict(num=str(num), chord='0')
-        return redirect(url_for('user'))
-    return render_template('index.html', names=names)#, messages=Message.query.order_by(sort), data0=users[0]["login"].strip()
+    sort1 = Message.id
+    sort = Cars.id
+    return render_template('index.html', names=names, cars=Cars.query.order_by(sort), messages=Message.query.order_by(sort1))#, messages=Message.query.order_by(sort), data0=users[0]["login"].strip()
 
 @app.route('/main', methods=['GET','POST'])
 def main():
     sort = Message.id
-    #return render_template('main.html', messages=Message.query.all(), data1="abcd")
-    #return render_template('main.html', messages=Message.query.order_by(Message.data1), data0="abcd")
-    #return render_template('main.html', messages=Message.query.order_by(Message.id), data0="abcd")
-    return render_template('main.html', messages=Message.query.order_by(sort))#, data0=users[0]["login"].strip()
-
-
-
+    return render_template('main.html', names=names, messages=Message.query.order_by(sort))#, data0=users[0]["login"].strip()
 
 @app.route('/from_us')
 def from_us():
-    return render_template('from_us.html')
+    return render_template('from_us.html', body = json_reader())
 
 @app.route('/user')
 def user():
     with open("response.json") as f:
         user_data =("%s" % (json.loads(f.read()).get("payload")))
-
-
         #return render_template('user.html', myfunction=search, user_json =user_data,  data=session.get('data') or {'num': 1, 'chord': '0'}) #u = 'User %s' % username,
-        return render_template('game.html', myfunction=search, user_json =user_data, data=session.get('data') or {'num': 'cghfgh', 'chord': '0'})
+        return render_template('game.html', myfunction=json_reader(), user_json =user_data, data=session.get('data') or {'num': 'cghfgh', 'chord': '0'})
 
 @app.route('/user/<index>/', methods=['POST'])
 def doit(index):
@@ -121,13 +82,11 @@ def doit(index):
     list_id = [l for l in names if l[0] == index][0]
     print('')
     print(list_id)
-    with open("response.json") as f:
+    with open("resourses/response.json") as f:
         user_data =("%s" % (json.loads(f.read()).get("payload")))
-    return render_template('user.html', myfunction=search, user_json=user_data, data=list_id, img = ('../../'+list_id[1]),img2 = ('../../'+list_id[2]))
-
+    return render_template('user.html', myfunction=json_reader(), user_json=user_data, data=list_id, img = ('../../'+list_id[1]),img2 = ('../../'+list_id[2]))
 
 app.secret_key = '73870e7f-634d-433b-946a-8d20132bafac'
-
 
 @app.route('/', methods=['POST'])
 def index_post():
@@ -156,29 +115,20 @@ def index_post():
             data = req.json()
             print(data)
 
-        #return abort()
 
-def search():
-    #with open(os.path.join(RESOURCE_DIR, "response.json")) as f:
+def json_reader():
     with open("response.json") as f:
-        # data=f.read()
-        # jsondata=json.loads(data)
-        # for row in jsondata['rows']:
-        #     #print row['text']
-        #     a=str(row['payload'])
         user_data = (json.loads(f.read()).get("payload"))
     return user_data
 
-search()
+json_reader()
 
-# @app.route('/user/<username>')
 @app.route('/user/<username>')
 def show_user_profile(username):
     with open("response.json") as f:
         user_data =("%s" % (json.loads(f.read()).get("payload")))
         #return "%s - %s" % (json.loads(f.read()).get("payload"))
-        return render_template('user.html', myfunction=search, user_json =user_data, u = 'User %s' % username)# 'User %s' % username
-
+        return render_template('user.html', myfunction=json_reader(), user_json =user_data, u = 'User %s' % username)# 'User %s' % username
 
 @app.route('/api/save-image/')
 def add_data_handler():
@@ -194,24 +144,9 @@ with app.test_request_context():
     print(url_for('from_us'))
     print(url_for('index'))
 
-
-
-
-
-
-
-
-# @app.route('/', methods=['GET'])
-# def index():
-#     return render_template('index.html')
-
-
 # @app.route('/main', methods=['GET','POST'])
 # def main():
 #     sort = Message.id
-#     #return render_template('main.html', messages=Message.query.all(), data1="abcd")
-#     #return render_template('main.html', messages=Message.query.order_by(Message.data1), data0="abcd")
-#     #return render_template('main.html', messages=Message.query.order_by(Message.id), data0="abcd")
 #     return render_template('main.html', names=names, messages=Message.query.order_by(sort), data0=users[0]["login"].strip())
 #
 
@@ -229,27 +164,32 @@ def add_message():
 
 @app.route('/sort/<name>', methods=['GET','POST'])#methods=['GET','POST']
 def sort(name):
-    if str(name) == "sort_by_data1":
-        sort = Message.data1
-    elif str(name) == "sort_by_text":
-        sort = Message.text
+    if str(name) == "sort_by_name":
+        sort = Cars.head
+    elif str(name) == "sort_by_price":
+        sort = Cars.price
     else:
-        sort = Message.id
+        sort = Cars.id
 
-    return render_template('index.html', messages=Message.query.order_by(sort), data0="abcd")
-
-with closing(psycopg2.connect(dbname='site_flask', user='postgres',
-                              password='123', host='localhost')) as conn:
-    with conn.cursor() as cursor:
-        cursor.execute('SELECT * FROM message LIMIT 50')
-        for row in cursor:
-            print(row)
-#------------------------------------------------------------------
+    return render_template('index.html', names=names, cars=Cars.query.order_by(sort), data0="abcd")
 
 
 if __name__ == '__main__':
-    #app.run()
-    app.run(host='0.0.0.0', port=5000)
+    parser()
+    app.run(host='127.0.0.1', port=5000)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -285,4 +225,65 @@ if __name__ == '__main__':
 #     # ins("eax", "456")
 # write_db("vendor_name")
 
+#-------------------------SELECT * FROM message LIMIT 50-------------------------
+# with closing(psycopg2.connect(dbname='site_flask', user='postgres',
+#                               password='123', host='localhost')) as conn:
+#     with conn.cursor() as cursor:
+#         cursor.execute('SELECT * FROM message LIMIT 50')
+#         for row in cursor:
+#             print(row)
+#------------------------------------------------------------------
 
+# import psycopg2
+# from psycopg2 import sql
+# import postgresql
+# from contextlib import closing
+
+#--------------index---------------------
+# num = request.args.get('num')
+# if num:
+#     session['data'] = dict(num=str(num), chord='0')
+#     return redirect(url_for('user'))
+#return render_template('from_us.html')
+
+#----------------------------connect----------------------------------------------
+# conn = psycopg2.connect(
+#     database="site_flask",
+#     user="postgres",
+#     password="123",
+#     host="localhost",
+#     port="5432"
+# )
+#----------------INSERT INTO users (login, password)---------------------
+# with conn.cursor() as cursor:
+#     conn.autocommit = True
+#     values =('PDX', 'Portland'),
+#     insert = sql.SQL('INSERT INTO users (login, password) VALUES {}').format(sql.SQL(',').join(map(sql.Literal, values)))
+#     cursor.execute(insert)
+# cursor.close()
+# conn.close()
+
+#----------------SELECT * FROM users LIMIT 50---------------------
+# with closing(psycopg2.connect(dbname='site_flask', user='postgres',
+#                               password='123', host='localhost')) as conn:
+#     with conn.cursor() as cursor:
+#         cursor.execute('SELECT * FROM users LIMIT 50')
+#         for row in cursor:
+#             print(row)
+#========================================================================
+
+#FOR_ELACTICSEARCH
+# @app.route('/user/<index>/', methods=['POST'])
+# def doit(index):
+#     print(index)
+#     list = []
+#     for i in names:
+#         list.append(i[0])
+#         sort_list = sorted(list)
+#
+#     list_id = [l for l in names if l[0] == index][0]
+#     print('')
+#     print(list_id)
+#     with open("response.json") as f:
+#         user_data =("%s" % (json.loads(f.read()).get("payload")))
+#     return render_template('user.html', myfunction=json_reader(), user_json=user_data, data=list_id, img = ('../../'+list_id[1]),img2 = ('../../'+list_id[2]))
