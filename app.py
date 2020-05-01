@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from parse_olx import Cars, parser
-from flask import Flask, render_template, request, url_for, jsonify, redirect, session, g
+from flask import Flask, render_template, request, url_for, render_template, jsonify, redirect, session, g
 import os
 import json
 from pip._vendor import requests
@@ -58,7 +58,7 @@ def index():
 @app.route('/main', methods=['GET','POST'])
 def main():
     sort = Message.id
-    return render_template('main.html', names=names, messages=Message.query.order_by(sort))#, data0=users[0]["login"].strip()
+    return render_template('main.html', names=names, cars=Cars.query.order_by(sort), messages=Message.query.order_by(sort))#, data0=users[0]["login"].strip()
 
 @app.route('/from_us')
 def from_us():
@@ -165,13 +165,22 @@ def add_message():
 @app.route('/sort/<name>', methods=['GET','POST'])#methods=['GET','POST']
 def sort(name):
     if str(name) == "sort_by_name":
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         sort = Cars.head
     elif str(name) == "sort_by_price":
+        print("!!!!!!!&&&&&&&&&&&&&&&&&&&!!!!!!!!!!!!!!!")
         sort = Cars.price
     else:
         sort = Cars.id
 
     return render_template('index.html', names=names, cars=Cars.query.order_by(sort), data0="abcd")
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return \
+        render_template('page_not_found.html'), 404
+
 
 
 if __name__ == '__main__':

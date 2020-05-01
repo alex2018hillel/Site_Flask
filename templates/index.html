@@ -1,249 +1,276 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <script type="text/javascript" src="jquery.js">
-    </script>
-    <script type="text/javascript" src="jquery-ui-1.10.4.custom.min.js">
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            var inputs = document.getElementsByTagName('input');
-            for (a = 0; a < inputs.length; a++) {
-                if (inputs[a].type == "checkbox") {
-                    var id = inputs[a].getAttribute("id");
-                    if (id==null){
-                        id=  "checkbox" +a;
-                    }
-                    inputs[a].setAttribute("id",id);
-                    var container = document.createElement('div');
-                    container.setAttribute("class", "ttr_checkbox");
-                    var label = document.createElement('label');
-                    label.setAttribute("for", id);
-                    $(inputs[a]).wrap(container).after(label);
-                }
-            }
-        });
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            var inputs = document.getElementsByTagName('input');
-            for (a = 0; a < inputs.length; a++) {
-                if (inputs[a].type == "radio") {
-                    var id = inputs[a].getAttribute("id");
-                    if (id==null){
-                        id=  "radio" +a;
-                    }
-                    inputs[a].setAttribute("id",id);
-                    var container = document.createElement('div');
-                    container.setAttribute("class", "ttr_radio");
-                    var label = document.createElement('label');
-                    label.setAttribute("for", id);
-                    $(inputs[a]).wrap(container).after(label);
-                }
-            }
-        });
-    </script>
-    <script type="text/javascript" src="../../../tt_slideshow.js">
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('#ttr_slideshow_inner').TTSlider({
-                slideShowSpeed:6000,cssPrefix: 'ttr_'
-            });
-        });
-    </script>
-    <script type="text/javascript" src="bootstrap.min.js">
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            var window_height =  Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-            var body_height = $(document.body).height();
-            $content = $("#ttr_content_and_sidebar_container");
-            if(body_height < window_height){
-                differ = (window_height - body_height);
-                content_height = $content.height() + differ;
-                $("#ttr_content_and_sidebar_container").css("min-height", content_height+"px");
-            }
-        });
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('#nav-expander').on('click',function(e){
-                e.preventDefault();
-                $('body').toggleClass('nav-expanded');
-            });
-        });
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('.ttr_menu_items ul.dropdown-menu [data-toggle=dropdown]').on('click', function(event) {
-                var window_width =  Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-                event.preventDefault();
-                event.stopPropagation();
-                $(this).parent().siblings().removeClass('open');
-                $(this).parent().toggleClass(function() {
-                    if ($(this).is(".open") ) {
-                        window.location.href = $(this).children("[data-toggle=dropdown]").attr('href');
-                        return "";
-                    } else {
-                        return "open";
-                    }
-                });
-            });
-        });
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('.ttr_vmenu_items ul.dropdown-menu [data-toggle=dropdown]').on('click', function(event) {
-                var window_width =  Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-                event.preventDefault();
-                event.stopPropagation();
-                $(this).parent().siblings().removeClass('open');
-                $(this).parent().toggleClass(function() {
-                    if ($(this).is(".open") ) {
-                        window.location.href = $(this).children("[data-toggle=dropdown]").attr('href');
-                        return "";
-                    } else {
-                        return "open";
-                    }
-                });
-            });
-        });
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            var objects = ['iframe', 'video','object'];
-            for(var i = 0 ; i < objects.length ; i++){
-                if ($(objects[i]).length > 0) {
-                    $(objects[i]).addClass('embed-responsive-item');
-                    $(objects[i]).parent().addClass('embed-responsive embed-responsive-16by9');
-                    $(".embed-responsive-16by9").css("padding-bottom","56.25%");
-                }
-            }
-        });
-    </script>
-    <script type="text/javascript">
-        WebFontConfig = {
-            google: { families: [ 'Playball'] }
-        };
-        (function() {
-            var wf = document.createElement('script');
-            wf.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://ajax.googleapis.com/ajax/libs/webfont/1.0.31/webfont.js';
-            wf.type = 'text/javascript';
-            wf.async = 'true';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(wf, s);
-        })();
-    </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Add the site description here" />
-    <meta  name="keywords" content="First keyword, second keyword," />
-    <title>
-        SiteFlask
-    </title>
-    <link rel="stylesheet" href="../static/bootstrap.css" type="text/css" media="screen"/>
-    <link rel="stylesheet"  href="{{ url_for( 'static', filename='style.css')}}" type="text/css" media="screen"/>
+{% extends 'base.html' %}
 
-    <!--[if lte IE 8]>
-    <link rel="stylesheet"  href="menuie.css" type="text/css" media="screen"/>
-    <link rel="stylesheet"  href="vmenuie.css" type="text/css" media="screen"/>
-    <![endif]-->
-    <script type="text/javascript" src="prefixfree.min.js">
-    </script>
-    <script type="text/javascript" src="../../../totop.js">
-    </script>
-    <!--[if IE 7]>
-    <style type="text/css" media="screen">
-        #ttr_vmenu_items  li.ttr_vmenu_items_parent {margin-left:-16px;font-size:0px;}
-    </style>
-    <![endif]-->
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="html5shiv.js">
-    </script>
-    <script type="text/javascript" src="respond.min.js">
-    </script>
-    <![endif]-->
-</head>
+{% block content %}
 
-<body class="Index">
-<a href="#" class="back-to-top"><img alt="Back to Top" src="../static/images/gototop.png"/></a>
-<header id="ttr_header">
-    <div id="ttr_header_inner">
-        <div class="ttr_title_position">
-            <h1 class="ttr_title_style ">
-                <a href="#">
-                    AВТОСАЛОН
-                </a>
-            </h1>
-        </div>
-    </div>
-</header>
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="utf-8">-->
+    <!--<script type="text/javascript" src="jquery.js">-->
+    <!--</script>-->
+    <!--<script type="text/javascript" src="jquery-ui-1.10.4.custom.min.js">-->
+    <!--</script>-->
+    <!--<script type="text/javascript">-->
+        <!--$(document).ready(function(){-->
+            <!--var inputs = document.getElementsByTagName('input');-->
+            <!--for (a = 0; a < inputs.length; a++) {-->
+                <!--if (inputs[a].type == "checkbox") {-->
+                    <!--var id = inputs[a].getAttribute("id");-->
+                    <!--if (id==null){-->
+                        <!--id=  "checkbox" +a;-->
+                    <!--}-->
+                    <!--inputs[a].setAttribute("id",id);-->
+                    <!--var container = document.createElement('div');-->
+                    <!--container.setAttribute("class", "ttr_checkbox");-->
+                    <!--var label = document.createElement('label');-->
+                    <!--label.setAttribute("for", id);-->
+                    <!--$(inputs[a]).wrap(container).after(label);-->
+                <!--}-->
+            <!--}-->
+        <!--});-->
+    <!--</script>-->
+    <!--<script type="text/javascript">-->
+        <!--$(document).ready(function(){-->
+            <!--var inputs = document.getElementsByTagName('input');-->
+            <!--for (a = 0; a < inputs.length; a++) {-->
+                <!--if (inputs[a].type == "radio") {-->
+                    <!--var id = inputs[a].getAttribute("id");-->
+                    <!--if (id==null){-->
+                        <!--id=  "radio" +a;-->
+                    <!--}-->
+                    <!--inputs[a].setAttribute("id",id);-->
+                    <!--var container = document.createElement('div');-->
+                    <!--container.setAttribute("class", "ttr_radio");-->
+                    <!--var label = document.createElement('label');-->
+                    <!--label.setAttribute("for", id);-->
+                    <!--$(inputs[a]).wrap(container).after(label);-->
+                <!--}-->
+            <!--}-->
+        <!--});-->
+    <!--</script>-->
+    <!--<script type="text/javascript" src="../../../tt_slideshow.js">-->
+    <!--</script>-->
+    <!--<script type="text/javascript">-->
+        <!--$(document).ready(function(){-->
+            <!--$('#ttr_slideshow_inner').TTSlider({-->
+                <!--slideShowSpeed:6000,cssPrefix: 'ttr_'-->
+            <!--});-->
+        <!--});-->
+    <!--</script>-->
+    <!--<script type="text/javascript" src="bootstrap.min.js">-->
+    <!--</script>-->
+    <!--<script type="text/javascript">-->
+        <!--$(document).ready(function(){-->
+            <!--var window_height =  Math.max(document.documentElement.clientHeight, window.innerHeight || 0);-->
+            <!--var body_height = $(document.body).height();-->
+            <!--$content = $("#ttr_content_and_sidebar_container");-->
+            <!--if(body_height < window_height){-->
+                <!--differ = (window_height - body_height);-->
+                <!--content_height = $content.height() + differ;-->
+                <!--$("#ttr_content_and_sidebar_container").css("min-height", content_height+"px");-->
+            <!--}-->
+        <!--});-->
+    <!--</script>-->
+    <!--<script type="text/javascript">-->
+        <!--$(document).ready(function(){-->
+            <!--$('#nav-expander').on('click',function(e){-->
+                <!--e.preventDefault();-->
+                <!--$('body').toggleClass('nav-expanded');-->
+            <!--});-->
+        <!--});-->
+    <!--</script>-->
+    <!--<script type="text/javascript">-->
+        <!--$(document).ready(function(){-->
+            <!--$('.ttr_menu_items ul.dropdown-menu [data-toggle=dropdown]').on('click', function(event) {-->
+                <!--var window_width =  Math.max(document.documentElement.clientWidth, window.innerWidth || 0);-->
+                <!--event.preventDefault();-->
+                <!--event.stopPropagation();-->
+                <!--$(this).parent().siblings().removeClass('open');-->
+                <!--$(this).parent().toggleClass(function() {-->
+                    <!--if ($(this).is(".open") ) {-->
+                        <!--window.location.href = $(this).children("[data-toggle=dropdown]").attr('href');-->
+                        <!--return "";-->
+                    <!--} else {-->
+                        <!--return "open";-->
+                    <!--}-->
+                <!--});-->
+            <!--});-->
+        <!--});-->
+    <!--</script>-->
+    <!--<script type="text/javascript">-->
+        <!--$(document).ready(function(){-->
+            <!--$('.ttr_vmenu_items ul.dropdown-menu [data-toggle=dropdown]').on('click', function(event) {-->
+                <!--var window_width =  Math.max(document.documentElement.clientWidth, window.innerWidth || 0);-->
+                <!--event.preventDefault();-->
+                <!--event.stopPropagation();-->
+                <!--$(this).parent().siblings().removeClass('open');-->
+                <!--$(this).parent().toggleClass(function() {-->
+                    <!--if ($(this).is(".open") ) {-->
+                        <!--window.location.href = $(this).children("[data-toggle=dropdown]").attr('href');-->
+                        <!--return "";-->
+                    <!--} else {-->
+                        <!--return "open";-->
+                    <!--}-->
+                <!--});-->
+            <!--});-->
+        <!--});-->
+    <!--</script>-->
+    <!--<script type="text/javascript">-->
+        <!--$(document).ready(function(){-->
+            <!--var objects = ['iframe', 'video','object'];-->
+            <!--for(var i = 0 ; i < objects.length ; i++){-->
+                <!--if ($(objects[i]).length > 0) {-->
+                    <!--$(objects[i]).addClass('embed-responsive-item');-->
+                    <!--$(objects[i]).parent().addClass('embed-responsive embed-responsive-16by9');-->
+                    <!--$(".embed-responsive-16by9").css("padding-bottom","56.25%");-->
+                <!--}-->
+            <!--}-->
+        <!--});-->
+    <!--</script>-->
+    <!--<script type="text/javascript">-->
+        <!--WebFontConfig = {-->
+            <!--google: { families: [ 'Playball'] }-->
+        <!--};-->
+        <!--(function() {-->
+            <!--var wf = document.createElement('script');-->
+            <!--wf.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://ajax.googleapis.com/ajax/libs/webfont/1.0.31/webfont.js';-->
+            <!--wf.type = 'text/javascript';-->
+            <!--wf.async = 'true';-->
+            <!--var s = document.getElementsByTagName('script')[0];-->
+            <!--s.parentNode.insertBefore(wf, s);-->
+        <!--})();-->
+    <!--</script>-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <!--<meta name="description" content="Add the site description here" />-->
+    <!--<meta  name="keywords" content="First keyword, second keyword," />-->
+    <!--<title>-->
+        <!--SiteFlask-->
+    <!--</title>-->
+    <!--<link rel="stylesheet" href="../static/bootstrap.css" type="text/css" media="screen"/>-->
+    <!--<link rel="stylesheet"  href="{{ url_for( 'static', filename='style.css')}}" type="text/css" media="screen"/>-->
 
-<nav id="ttr_menu" class="navbar-default navbar">
-    <div id="ttr_menu_inner_in">
-        <div class="menuforeground">
-        </div>
-        <div id="navigationmenu">
-            <div class="navbar-header">
-                <button id="nav-expander" data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
-<span class="sr-only">
-</span>
-                    <span class="icon-bar">
-</span>
-                    <span class="icon-bar">
-</span>
-                    <span class="icon-bar">
-</span>
-                </button>
-            </div>
-            <div class="menu-center collapse navbar-collapse">
-                <ul class="ttr_menu_items nav navbar-nav nav-justified">
-                    <li class="ttr_menu_items_parent dropdown active"><a href="/" class="ttr_menu_items_parent_link_active"><span class="menuchildicon"></span>Home
-                        <hr class ="horiz_separator"/></a>
-                    </li>
-                    <li class="ttr_menu_items_parent dropdown"><a href='/from_us' class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>About Us
-                        <hr class ="horiz_separator"/></a>
-                    </li>
-                    <li class="ttr_menu_items_parent dropdown"><a href="#" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>Services
-                        <hr class ="horiz_separator"/></a>
-                    </li>
-                    <li class="ttr_menu_items_parent dropdown"><a href="#" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>Blog
-                        <hr class ="horiz_separator"/></a>
-                    </li>
-                    <li class="ttr_menu_items_parent dropdown"><a href="#" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>Support
-                        <hr class ="horiz_separator"/></a>
-                    </li>
-                    <li class="ttr_menu_items_parent dropdown"><a href="#" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</nav>
+    <!--&lt;!&ndash;[if lte IE 8]>-->
+    <!--<link rel="stylesheet"  href="menuie.css" type="text/css" media="screen"/>-->
+    <!--<link rel="stylesheet"  href="vmenuie.css" type="text/css" media="screen"/>-->
+    <!--<![endif]&ndash;&gt;-->
+    <!--<script type="text/javascript" src="prefixfree.min.js">-->
+    <!--</script>-->
+    <!--<script type="text/javascript" src="../../../totop.js">-->
+    <!--</script>-->
+    <!--&lt;!&ndash;[if IE 7]>-->
+    <!--<style type="text/css" media="screen">-->
+        <!--#ttr_vmenu_items  li.ttr_vmenu_items_parent {margin-left:-16px;font-size:0px;}-->
+    <!--</style>-->
+    <!--<![endif]&ndash;&gt;-->
+    <!--&lt;!&ndash;[if lt IE 9]>-->
+    <!--<script type="text/javascript" src="html5shiv.js">-->
+    <!--</script>-->
+    <!--<script type="text/javascript" src="respond.min.js">-->
+    <!--</script>-->
+    <!--<![endif]&ndash;&gt;-->
+<!--</head>-->
 
+<!--<body class="Index">-->
+<!--<a href="#" class="back-to-top"><img alt="Back to Top" src="../static/images/gototop.png"/></a>-->
+<!--<header id="ttr_header">-->
+    <!--<div id="ttr_header_inner">-->
+        <!--<div class="ttr_title_position">-->
+            <!--<h1 class="ttr_title_style ">-->
+                <!--<a href="#">-->
+                    <!--AВТОСАЛОН-->
+                <!--</a>-->
+            <!--</h1>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</header>-->
 
-
-<div class="btn-group">
-    <form method="post" action="/sort/sort_by_name">
-    </form>
-    <form method="post" action="/sort/sort_by_price">
-    <button>sort_by_price</button>
-    </form>
-</div>
+<!--<nav id="ttr_menu" class="navbar-default navbar">-->
+    <!--<div id="ttr_menu_inner_in">-->
+        <!--<div class="menuforeground">-->
+        <!--</div>-->
+        <!--<div id="navigationmenu">-->
+            <!--<div class="navbar-header">-->
+                <!--<button id="nav-expander" data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">-->
+<!--<span class="sr-only">-->
+<!--</span>-->
+                    <!--<span class="icon-bar">-->
+<!--</span>-->
+                    <!--<span class="icon-bar">-->
+<!--</span>-->
+                    <!--<span class="icon-bar">-->
+<!--</span>-->
+                <!--</button>-->
+            <!--</div>-->
+            <!--<div class="menu-center collapse navbar-collapse">-->
+                <!--<ul class="ttr_menu_items nav navbar-nav nav-justified">-->
+                    <!--<li class="ttr_menu_items_parent dropdown active"><a href="/" class="ttr_menu_items_parent_link_active"><span class="menuchildicon"></span>Home-->
+                        <!--<hr class ="horiz_separator"/></a>-->
+                    <!--</li>-->
+                    <!--<li class="ttr_menu_items_parent dropdown"><a href='/from_us' class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>About Us-->
+                        <!--<hr class ="horiz_separator"/></a>-->
+                    <!--</li>-->
+                    <!--<li class="ttr_menu_items_parent dropdown"><a href="#" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>Services-->
+                        <!--<hr class ="horiz_separator"/></a>-->
+                    <!--</li>-->
+                    <!--<li class="ttr_menu_items_parent dropdown"><a href="#" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>Blog-->
+                        <!--<hr class ="horiz_separator"/></a>-->
+                    <!--</li>-->
+                    <!--<li class="ttr_menu_items_parent dropdown"><a href="#" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>Support-->
+                        <!--<hr class ="horiz_separator"/></a>-->
+                    <!--</li>-->
+                    <!--<li class="ttr_menu_items_parent dropdown"><a href="#" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>Contact</a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</nav>-->
 
 
+<!--<div class="btn-group">-->
+    <!--<form method="post" action="/sort/sort_by_name">-->
+    <!--</form>-->
+    <!--<form method="post" action="/sort/sort_by_price">-->
+    <!--<button>sort_by_price</button>-->
+    <!--</form>-->
+<!--</div>-->
+<!---------------------------------------------->
+<!--<div class="btn-group">-->
+        <!--<button>sort_by_name</button>-->
+        <!--<a href="{{ url_for('sort', name='sort_by_name') }}">Main page</a>-->
+<!--</div>-->
 
-<div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Segoe Marker&quot;;font-size:20px;color:#FFFFFF;">Consultant Services</span></p></div>
-<form method="post" action="/sort/sort_by_name">
-</form>
-    <input type='submit' value="sort_by_name">
-</div>
-<div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Segoe Marker&quot;;font-size:20px;color:#FFFFFF;">Consultant Services</span></p></div>
-<form method="post" action="/sort/sort_by_price">
+<!--<div class="btn-group">-->
+    <!--<button>sort_by_price</button>-->
+    <!--<a href="{{ url_for('sort', name='sort_by_price') }}">Main page</a>-->
+<!--</div>-->
+
+<!--<p style="text-align:Center;font-family:Times New Roman;font-size:12px;">-->
+    <!--<input type="submit" class="btn btn-dark" value="ПОДРОБНЕЕsort_by_name">-->
+    <!--<a href="{{ url_for('sort', name='sort_by_name') }}">Main page</a>-->
+<!--</p>-->
+
+<div><form method="post" action="/sort/sort_by_price">
     <input type='submit' value="sort_by_price">
 </form>
 </div>
+<div><form method="post" action="/sort/sort_by_name">
+    <input type='submit' value="sort_by_name">
+</form>
+</div>
+
+<div> <a href="{{ url_for('main', comm='sort_by_id') }}">Main page</a> </div>
+
+<!--<div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Segoe Marker&quot;;font-size:20px;color:#FFFFFF;">Consultant Services</span></p></div>-->
+<!--<form method="post" action="/sort/sort_by_name">-->
+<!--</form>-->
+    <!--<input type='submit' value="sort_by_name">-->
+<!--</div>-->
+<!--<div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Segoe Marker&quot;;font-size:20px;color:#FFFFFF;">Consultant Services</span></p></div>-->
+<!--<form method="post" action="/sort/sort_by_price">-->
+    <!--<input type='submit' value="sort_by_price">-->
+<!--</form>-->
+<!--</div>-->
 
 <form action="" method="get">
     <input name="s" placeholder="Поиск по сайту" type="search">
@@ -351,7 +378,7 @@
 
                 <div>{{ data0 }}#</div>
 
-                {% block content %}
+
                 <div class="container">
                     <h1>user</h1>
                     {% for user in users %}
@@ -379,8 +406,8 @@
                     </ul>
                     {% endfor %}
                 </div>
-                {% endblock %}
 
+            {% endblock %}
 
                 <div class="ttr_Index_html_row1 row">
                     <div class="post_column col-lg-3 col-md-3 col-sm-3 col-xs-12">
