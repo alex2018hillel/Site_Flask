@@ -18,9 +18,9 @@ names = [["Mary", "../static/images/11.jpg", "../static/images/12.jpg", "Lorem i
 
 
 POSTGRES = {
-    'user': 'postgres',
+    'user': 'myuser',
     'pw': '123',
-    'db': 'site_flask',
+    'db': 'postgres',
     'host': 'localhost',
     'port': '5432',
 }

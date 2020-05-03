@@ -21,12 +21,13 @@ request = requests.get(URL, headers=HEADERS).content
 soup = BeautifulSoup(request, 'lxml')
 parce = Flask(__name__)
 POSTGRES = {
-    'user': 'postgres',
+    'user': 'myuser',
     'pw': '123',
-    'db': 'site_flask',
+    'db': 'postgres',
     'host': 'localhost',
     'port': '5432',
 }
+# 'db': 'site_flask', 'user': 'postgres',
 parce.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' %POSTGRES
 db = SQLAlchemy(parce)
 
@@ -61,12 +62,11 @@ class Cars(db.Model):
 # table = Cars(a,a,a,a)
 # db.drop(engine)
 #db.drop(engine)
-deleted_objects = Cars.__table__.delete()
-engine = create_engine('postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' %POSTGRES, echo=False)
-#ddddd = db.delete('table')
-# where(addresses.c.email_address.startswith('xyz%'))
-engine.execute(deleted_objects)
-
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# deleted_objects = Cars.__table__.delete()
+# engine = create_engine('postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' %POSTGRES, echo=False)
+# engine.execute(deleted_objects)
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 db.create_all()
 # db.session.add(Message(text, tag, data1))
 # db.session.commit()

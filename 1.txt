@@ -25,6 +25,19 @@ pip install  psycopg2
 
 pip install flask-sqlalchemy psycopg2
 pip freeze  > requirements.txt  (pip freeze --local > requirements.txt)
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+sudo apt-get install libpq-dev python-dev
+pip install psycopg2
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+sudo apt-get install python3-lxml
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+--------------------------elasticsearch:7.6.2----------------------
+docker pull docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+docker ps -a -q     (stop)
+
+
 
 {% block app_content %}
 <h1>{{ _('Search Results') }}</h1>
