@@ -1,9 +1,13 @@
 from flask_sqlalchemy import SQLAlchemy
 from parse_olx import Cars, parser
-from flask import Flask, render_template, request, url_for, render_template, jsonify, redirect, session, g
+from flask import Flask, render_template, request, url_for, render_template, jsonify, redirect, session, Blueprint, flash, g
 import os
 import json
+from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash
+import db
 from pip._vendor import requests
+
 
 SECRET_KEY = 333
 BASE_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -26,13 +30,13 @@ POSTGRES = {
 }
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' %POSTGRES
 #app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://postgres:123@localhost:5432/site_flask"
-db = SQLAlchemy(app)
+db1 = SQLAlchemy(app)
 
 
-class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(1024), nullable=False)
-    data1 = db.Column(db.String(1024), nullable=False)
+class Message(db1.Model):
+    id = db1.Column(db1.Integer, primary_key=True)
+    text = db1.Column(db1.String(1024), nullable=False)
+    data1 = db1.Column(db1.String(1024), nullable=False)
 
     def __init__(self, text, tags, data1, sort="Message.text"):
         self.text = text.strip()
@@ -40,14 +44,14 @@ class Message(db.Model):
         self.tags = [Tag(text=tag.strip()) for tag in tags.split(',')]
 
 
-class Tag(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(32), nullable=False)
+class Tag(db1.Model):
+    id = db1.Column(db1.Integer, primary_key=True)
+    text = db1.Column(db1.String(32), nullable=False)
 
-    message_id = db.Column(db.Integer, db.ForeignKey('message.id'), nullable=False)
-    message = db.relationship('Message', backref=db.backref('tags', lazy=True))
+    message_id = db1.Column(db1.Integer, db1.ForeignKey('message.id'), nullable=False)
+    message = db1.relationship('Message', backref=db1.backref('tags', lazy=True))
 
-db.create_all()
+db1.create_all()
 
 @app.route('/', methods=['GET'])
 def index():
@@ -64,29 +68,23 @@ def main():
 def from_us():
     return render_template('from_us.html', body = json_reader())
 
-@app.route('/user')
-def user():
-    with open("response.json") as f:
-        user_data =("%s" % (json.loads(f.read()).get("payload")))
-        #return render_template('user.html', myfunction=search, user_json =user_data,  data=session.get('data') or {'num': 1, 'chord': '0'}) #u = 'User %s' % username,
-        return render_template('game.html', myfunction=json_reader(), user_json =user_data, data=session.get('data') or {'num': 'cghfgh', 'chord': '0'})
 
-@app.route('/user/<index>/', methods=['POST'])
-def doit(index):
-    print(index)
-    list = []
-    for i in names:
-        list.append(i[0])
-        sort_list = sorted(list)
-
-    list_id = [l for l in names if l[0] == index][0]
-    print('')
-    print(list_id)
-    with open("resourses/response.json") as f:
-        user_data =("%s" % (json.loads(f.read()).get("payload")))
-    return render_template('user.html', myfunction=json_reader(), user_json=user_data, data=list_id, img = ('../../'+list_id[1]),img2 = ('../../'+list_id[2]))
-
-app.secret_key = '73870e7f-634d-433b-946a-8d20132bafac'
+# @app.route('/user/<index>/', methods=['POST'])
+# def doit(index):
+#     print(index)
+#     list = []
+#     for i in names:
+#         list.append(i[0])
+#         sort_list = sorted(list)
+#
+#     list_id = [l for l in names if l[0] == index][0]
+#     print('')
+#     print(list_id)
+#     with open("resourses/response.json") as f:
+#         user_data =("%s" % (json.loads(f.read()).get("payload")))
+#     return render_template('user.html', myfunction=json_reader(), user_json=user_data, data=list_id, img = ('../../'+list_id[1]),img2 = ('../../'+list_id[2]))
+#
+# app.secret_key = '73870e7f-634d-433b-946a-8d20132bafac'
 
 @app.route('/', methods=['POST'])
 def index_post():
@@ -117,7 +115,7 @@ def index_post():
 
 
 def json_reader():
-    with open("response.json") as f:
+    with open("resourses/response.json") as f:
         user_data = (json.loads(f.read()).get("payload"))
     return user_data
 
@@ -156,8 +154,8 @@ def add_message():
     tag = request.form['tag']
     data1 = request.form['data1']
 
-    db.session.add(Message(text, tag, data1))
-    db.session.commit()
+    db1.session.add(Message(text, tag, data1))
+    db1.session.commit()
 
     return redirect(url_for('index'))
 
@@ -174,6 +172,65 @@ def sort(name):
         sort = Cars.id
 
     return render_template('index.html', names=names, cars=Cars.query.order_by(sort), data0="abcd")
+
+# bp = Blueprint("auth", __name__, url_prefix="/auth")
+# @bp.route("/login", methods=("GET", "POST"))
+# @app.route('/login', methods=['GET','POST'])
+# def login():
+#     """Log in a registered user by adding the user id to the session."""
+#     if request.method == "POST":
+#         login = request.form["login"]
+#         password = request.form["password"]
+#         #db = get_db()
+#         error = None
+#         user = db.Users.execute(
+#             "SELECT * FROM user WHERE login = ?", (login,)
+#         ).fetchone()
+#
+#         if user is None:
+#             print('1111111111111111111111111111111111111')
+#             error = "Incorrect username."
+#         elif not check_password_hash(user["password"], password):
+#             print('22222222222222222222222222222222222222')
+#             error = "Incorrect password."
+#
+#         if error is None:
+#             # store the user id in a new session and return to the index
+#             session.clear()
+#             print(user["id"])
+#             session["user_id"] = user["id"]
+#             return redirect(url_for("index"))
+#
+#         flash(error)
+#
+#     return render_template("auth/login.html")
+from flask_httpauth import HTTPBasicAuth
+auth = HTTPBasicAuth()
+
+users = {
+    "kira": generate_password_hash("tropp"),
+    "susan": generate_password_hash("bye")
+}
+
+@auth.verify_password
+def verify_password(username, password):
+    # password = db.get_password(username)
+    if username in users and check_password_hash(users.get(username), password):
+        return username
+
+@app.route('/login')
+@auth.login_required
+def login():
+    sort = Cars.price
+    #return "Hello, {}!".format(auth.current_user())
+    return render_template('index.html', names=names, cars=Cars.query.order_by(sort), data0="g.user_id")
+
+@app.route('/old_car')
+@auth.login_required
+def old_car():
+    sort = Cars.price
+    #return "Hello, {}!".format(auth.current_user())
+    return render_template('index1.html', names=names, cars=Cars.query.order_by(sort), data0="g.user_id")
 
 
 @app.errorhandler(404)

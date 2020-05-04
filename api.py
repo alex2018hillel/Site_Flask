@@ -115,11 +115,7 @@ def get_pw(username):
 # def verify_token(token):
 #     if token in tokens:
 #         return tokens[token]
-#
-# @app.route('/')
-# @auth.login_required
-# def index():
-#     return "Hello, {}!".format(auth.current_user())
+
 
 @auth.error_handler
 def unauthorized():

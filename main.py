@@ -1,7 +1,7 @@
 import logging
-from iogging.handlers import RotatingFileHandler
+from logging.handlers import RotatingFileHandler
 from flask import Flask
-from setting import RANDOM_STRING, FLASK_HOST, FLASK_PORT
+from settings import RANDOM_STRING, FLASK_HOST, FLASK_PORT
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = RANDOM_STRING

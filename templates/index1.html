@@ -1,0 +1,343 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+    <div><form method="post" action="/sort/sort_by_price">
+        <input type='submit' value="sort_by_price">
+    </form>
+    </div>
+    <div><form method="post" action="/sort/sort_by_name">
+        <input type='submit' value="sort_by_name">
+    </form>
+    </div>
+
+    <div> <a href="{{ url_for('main', comm='sort_by_id') }}">Main page</a> </div>
+
+
+
+    <form action="" method="get">
+        <input name="s" placeholder="Поиск по сайту" type="search">
+        <button type="submit">Поиск</button>
+    </form>
+
+    <div id="ttr_page" class="container">
+    <div id="ttr_content_and_sidebar_container">
+    <div id="ttr_content">
+    <div class="ttr_Index_html_row2 row">
+        {% for car in cars %}
+            <div class="post_column col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="ttr_Index_html_column20">
+                    <div class="html_content" style="font-family:Times New Roman;font-size:12px;min-width: 300px;position: absolute;"><p><img src={{ car.photo }} style="height:252px;margin:0px 0px 0px 0px;font-family:Times New Roman;font-size:12px;" /></p></div>
+                </div>
+            </div>
+            <div class="clearfix visible-xs-block">
+            </div>
+            <div class="post_column col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="ttr_Index_html_column21">
+                    <div class="html_content" style="font-family:Times New Roman;font-size:12px;">
+                        <p style="margin:10px 0px 0px 0px;text-align:Center;line-height:13px;font-family:Times New Roman;font-size:12px;">
+                            <span style="font-family:&quot;Monotype Corsiva&quot;;font-style:italic;font-size:24px;color:#4E4E4E;">{{ car.head }}</span></p>
+                        <p style="margin:10px 0px 0px 0px;text-align:Center;line-height:22px;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Monotype Corsiva:&quot;color:#959595;">{{ car.price }}</span></p>
+                        <p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><br /></p>
+                        <p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><br /></p>
+                        <p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><br /></p>
+                        <p style="text-align:Center;font-family:Times New Roman;font-size:12px;">
+                        <form action="/user/{{ car.head }}" style='width:300px;height:80px; align-content: center; margin:60px 40px 60px 40px enctype="multipart/form-data' method="POST">
+                            <input type="submit" class="btn btn-dark" value="ПОДРОБНЕЕ">
+                        </form>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix visible-sm-block visible-md-block visible-xs-block">
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <div> <a href="{{ url_for('main', comm='sort_by_id') }}">Main page</a> </div>
+
+    <div id="ttr_content_margin"class="container-fluid">
+    <div style="height:0px;width:0px;overflow:hidden;-webkit-margin-top-collapse: separate;"></div>
+    <div class="ttr_Index_html_row0 row">
+        <div class="post_column col-lg-3 col-md-6 col-sm-6 col-xs-12">
+            <div class="ttr_Index_html_column00">
+                <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Segoe Marker&quot;;font-size:20px;color:#FFFFFF;">Consultant Services</span></p></div>
+            </div>
+        </div>
+        <div class="clearfix visible-xs-block">
+        </div>
+        <div class="post_column col-lg-3 col-md-6 col-sm-6 col-xs-12">
+            <div class="ttr_Index_html_column01">
+                <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Segoe Marker&quot;;font-size:20px;color:#FFFFFF;">Management Services</span></p></div>
+            </div>
+        </div>
+        <div class="clearfix visible-sm-block visible-md-block visible-xs-block">
+        </div>
+        <div class="post_column col-lg-3 col-md-6 col-sm-6 col-xs-12">
+            <div class="ttr_Index_html_column02">
+                <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Segoe Marker&quot;;font-size:20px;color:#FFFFFF;">Team Source Services</span></p></div>
+            </div>
+        </div>
+        <div class="clearfix visible-xs-block">
+        </div>
+        <div class="post_column col-lg-3 col-md-6 col-sm-6 col-xs-12">
+            <div class="ttr_Index_html_column03">
+                <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Segoe Marker&quot;;font-size:20px;color:#FFFFFF;">Telecom Services</span></p></div>
+            </div>
+        </div>
+        <div class="clearfix visible-lg-block visible-sm-block visible-md-block visible-xs-block">
+        </div>
+    </div>
+
+    <div><form method="post" action="/sort/sort_by_data1">
+        <input type='submit' value="sort_by_data1">
+    </form>
+    </div>
+    <div><form method="post" action="/sort/sort_by_text">
+        <input type='submit' value="sort_by_text">
+    </form>
+    </div>
+
+    <h2>Messages</h2>
+    <form method="post" action="/add_message">
+        <input type="text" name="text">
+        <input type="text" name="tag">
+        <input type="text" name="data1">
+        <button type="submit">Add message</button>
+    </form>
+
+    <h3>Messages list</h3>
+    {% for message in messages %}
+        <div>{{ message.id }}#
+            <b>{{ message.text }}</b>
+
+            {% for tag in message.tags %}
+                <b>#{{ tag.text }}</b>
+                <b>#{{ message.data1 }}</b>
+                </div>
+            {% endfor %}
+    {% endfor %}
+
+    <div>{{ data0 }}#</div>
+
+
+    <div class="container">
+        <h1>user</h1>
+        {% for user in users %}
+            <ul id="user.username">
+                <li>
+                    <span class="field-name">User:</span>
+                    <span class="field-value">{{ user.username }}</span>
+                </li>
+                <li>
+                    <span class="field-name">Email:</span>
+                    <span class="field-value">{{ user.email }}</span>
+                </li>
+                <li>
+                    <span class="field-name">Created:</span>
+                    <span class="field-value">{{ user.created }}</span>
+                </li>
+                <li>
+                    <span class="field-name">Bio:</span>
+                    <span class="field-value">{{ user.bio }}</span>
+                </li>
+                <li>
+                    <span class="field-name">Admin:</span>
+                    <span class="field-value">{{ user.admin }}</span>
+                </li>
+            </ul>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+<div class="ttr_Index_html_row1 row">
+    <div class="post_column col-lg-3 col-md-3 col-sm-3 col-xs-12">
+        <div class="ttr_Index_html_column10">
+            <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:26px;color:#4E4E4E;">Our Services</span></p><p><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:16px;color:#959595;">Best Services for Everyone</span></p></div>
+        </div>
+    </div>
+    <div class="clearfix visible-xs-block">
+    </div>
+</div>
+
+
+
+<div class="clearfix visible-xs-block">
+</div>
+<div class="post_column col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <div class="ttr_Index_html_column31">
+        <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="margin:20px 0px 0px 0px;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:22px;color:#343434;">Why to Choose Us?</span></p><p style="margin:20px 0px 0px 0px;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#959595;">1.) Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa Nullam dictum felis eu pede mollis.</span></p><p><br style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#959595;" /></p><p><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#959595;">2.) Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim Nullam dictum felis eu pede mollis.</span></p><p><br style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#959595;" /></p><p><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#959595;">3.) Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. </span></p><p><br style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#959595;" /></p><p><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#959595;">4.) Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus.</span></p><p><br style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#959595;" /></p><p><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#959595;">5.) Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, </span></p></div>
+    </div>
+</div>
+<div class="clearfix visible-lg-block visible-sm-block visible-md-block visible-xs-block">
+</div>
+</div>
+<div class="ttr_Index_html_row4 row">
+    <div class="post_column col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="ttr_Index_html_column40">
+            <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:24px;color:#4E4E4E;">Basic Features Support</span></p><p><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:18px;color:#9D9D9D;">Best Features for Everyone</span></p></div>
+        </div>
+    </div>
+    <div class="clearfix visible-lg-block visible-sm-block visible-md-block visible-xs-block">
+    </div>
+</div>
+<div class="ttr_Index_html_row5 row">
+    <div class="post_column col-lg-3 col-md-6 col-sm-6 col-xs-12">
+        <div class="ttr_Index_html_column50">
+            <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Monotype Corsiva&quot;;font-size:26px;color:#FFFFFF;">Retina Ready</span></p><p><div style="float:Stretch;margin:0px 0px 0px 0px;font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><img src="../static/images/886.png" style="width:50px;height:30px;font-family:Times New Roman;font-size:12px;" /></p></div><br style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#B4F2CE;" /></p><p style="line-height:22px;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#B4F2CE;">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,</span></p></div>
+    </div>
+</div>
+<div class="clearfix visible-xs-block">
+</div>
+<div class="post_column col-lg-3 col-md-6 col-sm-6 col-xs-12">
+    <div class="ttr_Index_html_column51">
+        <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Monotype Corsiva&quot;;font-size:26px;color:#FFFFFF;">Video Support</span></p><p><div style="float:Stretch;margin:0px 0px 0px 0px;font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><img src="../static/images/887.png" style="width:45px;height:32px;font-family:Times New Roman;font-size:12px;" /></p></div><br style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#F6D6D6;" /></p><p style="line-height:22px;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#F6D6D6;">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,</span></p></div>
+</div>
+</div>
+<div class="clearfix visible-sm-block visible-md-block visible-xs-block">
+</div>
+<div class="post_column col-lg-3 col-md-6 col-sm-6 col-xs-12">
+    <div class="ttr_Index_html_column52">
+        <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Monotype Corsiva&quot;;font-size:26.5px;color:#FFFFFF;">Awesome Support</span><div style="float:Stretch;margin:0px 0px 0px 0px;font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><img src="../static/images/888.png" style="width:45px;height:35px;font-family:Times New Roman;font-size:12px;" /></p><br style="text-align:Center;font-family:Times New Roman;font-size:12px;" /></div></p><p style="line-height:22px;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#CBE8F2;">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes</span></p></div>
+</div>
+</div>
+<div class="clearfix visible-xs-block">
+</div>
+<div class="post_column col-lg-3 col-md-6 col-sm-6 col-xs-12">
+    <div class="ttr_Index_html_column53">
+        <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;line-height:19px;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Monotype Corsiva&quot;;font-size:25.75px;color:#FFFFFF;">Responsive</span><div style="float:Stretch;margin:0px 0px 0px 0px;font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><br style="font-size:11.25px;font-family:Times New Roman;" /><img src="../static/images/889.png" style="width:40px;height:36px;font-family:Times New Roman;font-size:12px;" /></p><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><br style="font-size:11.25px;font-family:Times New Roman;" /></p><p style="line-height:22px;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:13.25px;color:#F0DFB2;">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes</span></p></div></p></div>
+</div>
+</div>
+<div class="clearfix visible-lg-block visible-sm-block visible-md-block visible-xs-block">
+</div>
+</div>
+<div class="ttr_Index_html_row6 row">
+    <div class="post_column col-lg-12 col-md-6 col-sm-6 col-xs-12">
+        <div class="ttr_Index_html_column60">
+            <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:24px;color:#343434;">Team Behind Success</span><span style="font-size:22px;color:#959595;font-family:Times New Roman;">
+</span><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:18px;color:#959595;">Meet our Members</span></p></div>
+        </div>
+    </div>
+    <div class="clearfix visible-lg-block visible-xs-block">
+    </div>
+</div>
+<div class="ttr_Index_html_row7 row">
+    <div class="post_column col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <div class="ttr_Index_html_column70">
+            <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p><img src="../static/images/890.jpg" style="margin:0px 0px 0px 0px;font-family:Times New Roman;font-size:12px;" /></p></div>
+        </div>
+    </div>
+    <div class="clearfix visible-xs-block">
+    </div>
+    <div class="post_column col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <div class="ttr_Index_html_column71">
+            <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p><img src="../static/images/891.jpg" style="margin:0px 0px 0px 0px;font-family:Times New Roman;font-size:12px;" /></p></div>
+        </div>
+    </div>
+    <div class="clearfix visible-xs-block">
+    </div>
+    <div class="post_column col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <div class="ttr_Index_html_column72">
+            <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p><img src="../static/images/892.jpg" style="margin:0px 0px 0px 0px;font-family:Times New Roman;font-size:12px;" /></p></div>
+        </div>
+    </div>
+    <div class="clearfix visible-lg-block visible-sm-block visible-md-block visible-xs-block">
+    </div>
+</div>
+<div class="ttr_Index_html_row8 row">
+    <div class="post_column col-lg-3 col-md-6 col-sm-6 col-xs-12">
+        <div class="ttr_Index_html_column80">
+            <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p><div style="float:Stretch;margin:0px 0px 20px 0px;font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><img src="../static/images/893.png" style="width:50px;height:52px;font-family:Times New Roman;font-size:12px;" /><br style="font-family:&quot;Monotype Corsiva&quot;;font-size:26px;color:#FFFFFF;" /></p><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Monotype Corsiva&quot;;font-size:26px;color:#FFFFFF;">1286 Likes</span></p><br /></div></p></div>
+    </div>
+</div>
+<div class="clearfix visible-xs-block">
+</div>
+<div class="post_column col-lg-3 col-md-6 col-sm-6 col-xs-12">
+    <div class="ttr_Index_html_column81">
+        <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><div style="float:Stretch;margin:0px 0px 0px 0px;font-family:Times New Roman;font-size:12px;"><p><img src="../static/images/894.png" style="width:50px;height:42px;font-family:Times New Roman;font-size:12px;" /></p><p><span style="font-family:&quot;Monotype Corsiva&quot;;font-size:26px;color:#FFFFFF;">1000 Fan Following</span></p></div></p></div>
+</div>
+</div>
+<div class="clearfix visible-sm-block visible-md-block visible-xs-block">
+</div>
+<div class="post_column col-lg-3 col-md-6 col-sm-6 col-xs-12">
+    <div class="ttr_Index_html_column82">
+        <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p><div style="float:Stretch;margin:0px 0px 0px 0px;font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><img src="../static/images/895.png" style="width:100px;height:54px;font-family:Times New Roman;font-size:12px;" /><br style="font-family:&quot;Monotype Corsiva&quot;;font-size:26px;color:#FFFFFF;" /></p><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Monotype Corsiva&quot;;font-size:26px;color:#FFFFFF;">12079 Downloads</span></p><br /></div></p></div>
+</div>
+</div>
+<div class="clearfix visible-xs-block">
+</div>
+<div class="post_column col-lg-3 col-md-6 col-sm-6 col-xs-12">
+    <div class="ttr_Index_html_column83">
+        <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p><div style="float:Stretch;margin:0px 0px 0px 0px;font-family:Times New Roman;font-size:12px;"><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><img src="../static/images/896.png" style="width:50px;height:40px;font-family:Times New Roman;font-size:12px;" /><br style="font-family:&quot;Monotype Corsiva&quot;;font-size:26px;color:#FFFFFF;" /></p><p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Monotype Corsiva&quot;;font-size:26px;color:#FFFFFF;">Client Supports</span></p><br /></div></p></div>
+</div>
+</div>
+<div class="clearfix visible-lg-block visible-sm-block visible-md-block visible-xs-block">
+</div>
+</div>
+<div class="ttr_Index_html_row9 row">
+    <div class="post_column col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="ttr_Index_html_column90">
+            <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="margin:0px 0px 30px 0px;text-align:Center;line-height:13px;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Monotype Corsiva&quot;;font-size:38px;color:#343434;">Do you want to Work with Us?</span><span style="font-family:&quot;Monotype Corsiva&quot;;font-size:14px;color:#343434;"> </span></p><p style="margin:0px 0px 30px 0px;text-align:Center;line-height:22px;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#959595;">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</span></p><p style="margin:0px 0px 30px 0px;text-align:Center;line-height:13px;font-family:Times New Roman;font-size:12px;"><span><br style="color:#343434;font-family:Times New Roman;font-size:12px;" /><button onclick="location.href='#'" target="_self" type="button" class="btn btn-default">Contact US</button></span></p></div>
+        </div>
+    </div>
+    <div class="clearfix visible-lg-block visible-sm-block visible-md-block visible-xs-block">
+    </div>
+</div>
+<div class="ttr_Index_html_row10 row">
+    <div class="post_column col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="ttr_Index_html_column100">
+            <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p><iframe height="372" src="http://www.youtube.com/embed/ZMclqWLPsM8" width="662" style="margin:0px 0px 0px 0px;font-family:Times New Roman;font-size:12px;"></iframe></p></div>
+        </div>
+    </div>
+    <div class="clearfix visible-xs-block">
+    </div>
+    <div class="post_column col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="ttr_Index_html_column101">
+            <div class="html_content" style="font-family:Times New Roman;font-size:12px;"><p style="margin:20px 0px 0px 0px;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:24px;color:#959595;">Video </span><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:24px;color:#E65858;">Frame </span><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:24px;color:#959595;">Supports&nbsp;&nbsp;too !</span></p><p style="margin:20px 0px 0px 0px;line-height:22px;font-family:Times New Roman;font-size:12px;"><span style="font-family:&quot;Microsoft Tai Le&quot;;font-size:14px;color:#959595;">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</span></p></div>
+        </div>
+    </div>
+    <div class="clearfix visible-lg-block visible-sm-block visible-md-block visible-xs-block">
+    </div>
+</div>
+<div style="height:0px;width:0px;overflow:hidden;-webkit-margin-top-collapse: separate;"></div>
+</div>
+</div>
+<div style="clear:both">
+</div>
+</div>
+</div>
+<div style="height:0px;width:0px;overflow:hidden;"></div>
+<footer id="ttr_footer">
+    <div class="ttr_footer_bottom_footer">
+        <div class="ttr_footer_bottom_footer_inner">
+            <div id="ttr_copyright">
+                <a href="#">
+                    Copyright@Example.com
+                </a>
+            </div>
+            <div id="ttr_footer_designed_by_links">
+                <a href="http://templatetoaster.com">
+                    Website
+                </a>
+                <span id="ttr_footer_designed_by">
+Designed With TemplateToaster
+</span>
+            </div>
+            <div class="ttr_footer_rss">
+            </div>
+            <a href=""class="ttr_footer_facebook">
+            </a>
+            <a href=""class="ttr_footer_linkedin">
+            </a>
+            <a href=""class="ttr_footer_twitter">
+            </a>
+            <a href=""class="ttr_footer_googleplus">
+            </a>
+        </div>
+    </div>
+</footer>
+<div style="height:0px;width:0px;overflow:hidden;-webkit-margin-bottom-collapse: separate;"></div>
