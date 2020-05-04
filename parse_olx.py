@@ -1,3 +1,5 @@
+import contextlib
+
 import requests
 from flask import Flask, session
 from flask_sqlalchemy import SQLAlchemy
@@ -19,14 +21,28 @@ request = requests.get(URL, headers=HEADERS).content
 soup = BeautifulSoup(request, 'lxml')
 parce = Flask(__name__)
 POSTGRES = {
-    'user': 'postgres',
+    'user': 'myuser',
     'pw': '123',
-    'db': 'site_flask',
+    'db': 'postgres',
     'host': 'localhost',
     'port': '5432',
 }
+# 'db': 'site_flask', 'user': 'postgres',
 parce.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' %POSTGRES
 db = SQLAlchemy(parce)
+
+# db.session.delete(me)
+# db.session.commit()
+
+
+# meta = MetaData()
+# with contextlib.closing(psycopg2.connect()) as con:
+#     trans = con.begin()
+#     for table in reversed(meta.sorted_tables): con.execute(table.delete())
+#     trans.commit()
+# db.metadata.drop_all()
+# db.session.configure(bind=engine)
+
 
 
 class Cars(db.Model):
@@ -42,13 +58,43 @@ class Cars(db.Model):
         self.link = link.strip()
         self.photo = photo.strip()
         self.price = price.strip()
-
-deleted_objects = Cars.__table__.delete()
-engine = create_engine('postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' %POSTGRES, echo=False)
-
-engine.execute(deleted_objects)
-
+# m = MetaData()
+# table = Cars(a,a,a,a)
+# db.drop(engine)
+#db.drop(engine)
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# deleted_objects = Cars.__table__.delete()
+# engine = create_engine('postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' %POSTGRES, echo=False)
+# engine.execute(deleted_objects)
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 db.create_all()
+# db.session.add(Message(text, tag, data1))
+# db.session.commit()
+#-----------------------------------------------------------
+# conn = psycopg2.connect(
+#     database="site_flask",
+#     user="postgres",
+#     password="123",
+#     host="localhost",
+#     port="5432"
+# )
+# #==========
+# #with conn.cursor() as cursor:
+# #     conn.autocommit = True
+# #==========
+# cur = conn.cursor()
+# cur.execute('''CREATE TABLE OLD_CARS
+#      (head TEXT PRIMARY KEY NOT NULL,
+#      link TEXT NOT NULL,
+#      photo TEXT NOT NULL,
+#      price CHAR(50))''')
+# #============================================================================
+# with closing(psycopg2.connect(dbname='site_flask', user='postgres',
+#                               password='123', host='localhost')) as conn:
+#     with conn.cursor() as cursor:
+#         cursor.execute('SELECT * FROM OLD_CARS LIMIT 50')
+#         for row in cursor:
+#             print(row)
 
 def parser():
     list_price = []
@@ -136,47 +182,4 @@ parser()
 #!!!els = doc.xpath('//*[@id="body-container"]/div[3]/div/div[1]/table[1]/tbody/tr[2]/td/div/table/tbody/tr[1]/td[2]/div/h3/a/strong')[0].text
 #els = doc.xpath("//div[@id='__PWS_ROOT__']//div[@class='gridCentered']/div/div/div[1]/div[1]/div/div/div/div/div/div[1]/div[1]/a/div/div[1]/div/div/div/div/div/img")
 #els = doc.xpath("//div[@id='__PWS_ROOT__']").text
-
-# db.session.add(Message(text, tag, data1))
-# db.session.commit()
-#-----------------------------------------------------------
-# conn = psycopg2.connect(
-#     database="site_flask",
-#     user="postgres",
-#     password="123",
-#     host="localhost",
-#     port="5432"
-# )
-# #==========
-# #with conn.cursor() as cursor:
-# #     conn.autocommit = True
-# #==========
-# cur = conn.cursor()
-# cur.execute('''CREATE TABLE OLD_CARS
-#      (head TEXT PRIMARY KEY NOT NULL,
-#      link TEXT NOT NULL,
-#      photo TEXT NOT NULL,
-#      price CHAR(50))''')
-# #============================================================================
-# with closing(psycopg2.connect(dbname='site_flask', user='postgres',
-#                               password='123', host='localhost')) as conn:
-#     with conn.cursor() as cursor:
-#         cursor.execute('SELECT * FROM OLD_CARS LIMIT 50')
-#         for row in cursor:
-#             print(row)
-
-
-
-
-# db.session.delete(me)
-# db.session.commit()
-
-
-# meta = MetaData()
-# with contextlib.closing(psycopg2.connect()) as con:
-#     trans = con.begin()
-#     for table in reversed(meta.sorted_tables): con.execute(table.delete())
-#     trans.commit()
-# db.metadata.drop_all()
-# db.session.configure(bind=engine)
-
+#//*[@id="__PWS_ROOT__"]/div[1]/div[3]/div/div/div/div[3]/div/div/div[2]/div/div[1]  /div/div/div[1]/div[1]/div/div/div/div/div/div[1]/div[1]/a/div/div[1]/div/div/div/div/div/img

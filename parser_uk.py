@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
 import re
-import json
+from elasticsearch import Elasticsearch
+es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
 URL = 'https://www.autotrader.co.uk/car-search?advertising-location=at_cars&search-target=usedcars&is-quick-search=TRUE&postcode=WC2N+5DU&make=TESLA&price-search-type=total-price'
 
@@ -12,8 +13,50 @@ HEADERS = {
 file_name = ("uk_cars" + ".json")
 full_json = {}
 request = requests.get(URL, headers=HEADERS).content
-soup = BeautifulSoup(request, 'lxml')
+soup = BeautifulSoup(request, 'html.parser')
 container = soup.select("li.search-page__result")
+
+def connect_elasticsearch():
+    _es = None
+    _es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
+    if _es.ping():
+        print('Yay Connect')
+    else:
+        print('Awww it could not connect!')
+    return _es
+
+
+def create_index(es_object = connect_elasticsearch(), index_name='cars'):
+    created = False
+    # index settings
+    settings = {
+        "settings": {
+            "number_of_shards": 1,
+            "number_of_replicas": 0
+        },
+        "mappings": {
+            "cars": {
+                "dynamic": "false",
+                "properties": {
+                    "head": {
+                        "type": "text"
+                    },
+                    "link": {
+                        "type": "text"
+                    },
+                    "photo": {
+                        "type": "text"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                }
+            }
+        }
+    }
+
+create_index(connect_elasticsearch(),'a')
+
 
 def record_to_json( file_name):
     names_list = []
@@ -47,11 +90,24 @@ def record_to_json( file_name):
         list_price.append(price)
         #print(price)
 
+    # for n, l, f, p in zip(names_list, links, photos, list_price):
+    #     to_json = {n:{'head': n, 'link': l, 'photo': f, 'price': p}}
+    #     full_json.update(to_json)
+    #
+    # with open(file_name, 'w') as f:
+    #     json.dump(full_json, f)
+    # with open(file_name) as f:
+    #     print(f.read())
+    i=1
     for n, l, f, p in zip(names_list, links, photos, list_price):
-        to_json = {n:{'head': n, 'link': l, 'photo': f, 'price': p}}
-        full_json.update(to_json)
+        #to_json = {n:{'head': n, 'link': l, 'photo': f, 'price': p}}
+        to_json = {'head': n, 'link': l, 'photo': f, 'price': p}
+        print(to_json)
+        es.index(index='cars', id=i, body=to_json)
+        i +=1
 
-    with open(file_name, 'w') as f:
-        json.dump(full_json, f)
-    with open(file_name) as f:
-        print(f.read())
+    # with open(file_name, 'w') as f:
+    #     json.dump(full_json, f)
+    # with open(file_name) as f:
+    #     print(f.read())
+record_to_json( '2.txt')
