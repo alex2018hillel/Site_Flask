@@ -4,19 +4,40 @@ from flask_sqlalchemy import SQLAlchemy
 import psycopg2
 from psycopg2 import sql
 from contextlib import closing
-from sqlalchemy import MetaData, create_engine, Table
+from sqlalchemy import MetaData, create_engine, Table, text, create_engine
+import postgresql
+
 
 parce = Flask(__name__)
 
 POSTGRES = {
     'user': 'postgres',
     'pw': '123',
-    'db': 'site_flask',
+    'db': 'postgres',
     'host': 'localhost',
     'port': '5432',
 }
 parce.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' %POSTGRES
 db = SQLAlchemy(parce)
+
+# engine = create_engine('postgres://postgres:123@localhost:5432/site_flask', echo=True)
+# conn = engine.connect()
+
+# stmt = text("SELECT * FROM public.users ORDER BY id ASC")
+# stmt = text("SELECT DISTINCT login FROM public.users")# SELECT table_name FROM information_schema.tables
+# result = conn.execute(stmt)
+# print("RES:",result)
+
+#bd = postgresql.open('pq://postgres:postgres@localhost:5432/site_flask')
+bd = postgresql.open('pq://postgres:123@localhost:5432/postgres')
+def get_users():
+    users = []
+    u = bd.query("SELECT DISTINCT login FROM public.users")
+    for i in u:
+        users.append(i[0].strip())
+    print("RES:", users)
+
+# get_users()
 
 class Users(db.Model):
 
@@ -41,28 +62,34 @@ def post_db(login, password):
     db.session.commit()
 
 post_db('darya', 'tropp')
-post_db('kira', 'tropp1')
+post_db('kira2', 'tropp2')
 
 
 def get_password(username):
-    user = Users.query.filter_by(login=username).first()
-    return user.password
+    uname = "'"+username+"'"
+    t = "SELECT password FROM public.users WHERE login="+uname
+    user = bd.query(t)
+    return user[0][0]
 
 def get_id(username):
-    user = Users.query.filter_by(login=username).first()
-    return user.id
+    uname = "'"+username+"'"
+    t = "SELECT id FROM public.users WHERE login="+uname
+    user = bd.query(t)
+    #user = bd.query("SELECT id FROM public.users WHERE login='kira2'")
+    return user[0][0]
 
-print(get_password('kira'))
-print(get_id('kira'))
+# print(get_password('darya'))
+# print(get_id('kira2'))
 
 
 # from yourapp import User    ?????????????????????????????????
-me = Users('admin', 'admin@example.com')
-db.session.add(me)
-db.session.commit()
-print(me.id)
-db.session.delete(me)
-db.session.commit()
+
+# me = Users('admin', 'admin@example.com')
+# db.session.add(me)
+# db.session.commit()
+# print(me.id)
+# db.session.delete(me)
+# db.session.commit()
 
 #==============================================================
 # def get_db():

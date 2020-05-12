@@ -2,24 +2,16 @@
 
 {% block content %}
 
-
-
-    <div><form method="post" action="/sort/sort_by_price">
-        <input type='submit' value="sort_by_price">
-    </form>
-    </div>
-    <div><form method="post" action="/sort/sort_by_name">
-        <input type='submit' value="sort_by_name">
-    </form>
-    </div>
-
-    <div> <a href="{{ url_for('main', comm='sort_by_id') }}">Main page</a> </div>
-
-
-
-    <form action="" method="get">
-        <input name="s" placeholder="Поиск по сайту" type="search">
-        <button type="submit">Поиск</button>
+    <form action = "{{ url_for('sort_car') }}" method = "POST">
+        <select name="sort">
+            {%- for sort in sorts %}
+                <option value="{{ sort }}"
+                        {{ 'selected' }}
+                >{{ sort }}
+                </option>
+            {%- endfor %}
+        </select>
+        <input type = "submit" value = "SORT" />
     </form>
 
     <div id="ttr_page" class="container">
@@ -44,7 +36,7 @@
                         <p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><br /></p>
                         <p style="text-align:Center;font-family:Times New Roman;font-size:12px;"><br /></p>
                         <p style="text-align:Center;font-family:Times New Roman;font-size:12px;">
-                        <form action="/user/{{ car.head }}" style='width:300px;height:80px; align-content: center; margin:60px 40px 60px 40px enctype="multipart/form-data' method="POST">
+                        <form action="{{ car.link }}" style='width:300px;height:80px; align-content: center; margin:60px 40px 60px 40px enctype="multipart/form-data' method="POST">
                             <input type="submit" class="btn btn-dark" value="ПОДРОБНЕЕ">
                         </form>
                         </p>
@@ -122,7 +114,7 @@
     {% endfor %}
 
     <div>{{ data0 }}#</div>
-
+{% endblock %}
 
     <div class="container">
         <h1>user</h1>
@@ -152,7 +144,7 @@
         {% endfor %}
     </div>
 
-{% endblock %}
+
 
 <div class="ttr_Index_html_row1 row">
     <div class="post_column col-lg-3 col-md-3 col-sm-3 col-xs-12">

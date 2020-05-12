@@ -44,7 +44,7 @@
             }
         });
     </script>
-    <script type="text/javascript" src="../../../tt_slideshow.js">
+    <script type="text/javascript" src="../static/tt_slideshow.js">
     </script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -53,7 +53,7 @@
             });
         });
     </script>
-    <script type="text/javascript" src="bootstrap.min.js">
+    <script type="text/javascript" src="../static/bootstrap.min.js">
     </script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -149,9 +149,9 @@
     <link rel="stylesheet"  href="menuie.css" type="text/css" media="screen"/>
     <link rel="stylesheet"  href="vmenuie.css" type="text/css" media="screen"/>
     <![endif]-->
-    <script type="text/javascript" src="prefixfree.min.js">
+    <script type="text/javascript" src="../static/prefixfree.min.js">
     </script>
-    <script type="text/javascript" src="../../../totop.js">
+    <script type="text/javascript" src="../static/totop.js">
     </script>
     <!--[if IE 7]>
     <style type="text/css" media="screen">
@@ -173,7 +173,7 @@
         <div class="ttr_title_position">
             <h1 class="ttr_title_style ">
                 <a href="#">
-                    AВТОСАЛОН
+                    zero emission
                 </a>
             </h1>
         </div>
@@ -199,22 +199,22 @@
             </div>
             <div class="menu-center collapse navbar-collapse">
                 <ul class="ttr_menu_items nav navbar-nav nav-justified">
-                    <li class="ttr_menu_items_parent dropdown active"><a href="/" class="ttr_menu_items_parent_link_active"><span class="menuchildicon"></span>Home
+                    <li class="ttr_menu_items_parent dropdown active"><a href="{{ url_for('index') }}" class="ttr_menu_items_parent_link_active"><span class="menuchildicon"></span>Home
                         <hr class ="horiz_separator"/></a>
                     </li>
                     <li class="ttr_menu_items_parent dropdown"><a href='/from_us' class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>About Us
                         <hr class ="horiz_separator"/></a>
                     </li>
-                    <li class="ttr_menu_items_parent dropdown"><a href='/old_car' class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>old_car
+                    <li class="ttr_menu_items_parent dropdown"><a href="{{ url_for('old_car') }}" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>ukraine car
                         <hr class ="horiz_separator"/></a>
                     </li>
-                    <li class="ttr_menu_items_parent dropdown"><a href="#" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>Blog
+                    <li class="ttr_menu_items_parent dropdown"><a href="{{ url_for('add_message') }}" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>add message
                         <hr class ="horiz_separator"/></a>
                     </li>
-                    <li class="ttr_menu_items_parent dropdown"><a href="{{ url_for('login') }}" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>login
+                    <li class="ttr_menu_items_parent dropdown"><a href="{{ url_for('sign_in') }}" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>sign in
                         <hr class ="horiz_separator"/></a>
                     </li>
-                    <li class="ttr_menu_items_parent dropdown"><a href="#" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>Contact</a>
+                    <li class="ttr_menu_items_parent dropdown"><a href="{{ url_for('sign_up') }}" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>sign up</a>
                     </li>
                 </ul>
             </div>

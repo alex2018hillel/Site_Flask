@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div><form method="post" action="/sort/sort_by_data1">
+        <input type='submit' value="sort_by_data1">
+    </form>
+    </div>
+    <div><form method="post" action="/sort/sort_by_text">
+        <input type='submit' value="sort_by_text">
+    </form>
+    </div>
+
+    <h2>Messages</h2>
+    <form method="post" action="/add_message">
+        <input type="text" name="text">
+        <input type="text" name="data1">
+        <button type="submit">Add message</button>
+    </form>
+
+    <h3>Messages list</h3>
+    {% for message in messages %}
+        <div>{{ message.id }}#
+            <b>{{ message.text }}</b>
+            <b>#{{ message.data1 }}</b>
+        </div>
+    {% endfor %}
+
+
+{% endblock %}

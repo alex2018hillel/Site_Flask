@@ -8,13 +8,12 @@ parser.add_argument("head")
 parser.add_argument("link")
 parser.add_argument("photo")
 parser.add_argument("price")
-
-app = Flask(__name__)
-api = Api(app)
-app.config['SECRET_KEY'] = '123'
+from app import app
+# app = Flask(__name__)
+# api = Api(app)
+# app.config['SECRET_KEY'] = '123'
 auth = HTTPBasicAuth()
-# auth = HTTPDigestAuth()
-# auth = HTTPTokenAuth(scheme='Bearer')
+
 
 tokens = {
     "secret-token-1": "john",
