@@ -25,14 +25,3 @@ def init_db():
     # import libs.message
     Base.metadata.create_all(bind=engine)
 
-# def create():
-# engine = create_engine('postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' %POSTGRES, convert_unicode=True)
-# metadata = MetaData()
-# db_session = scoped_session(sessionmaker(autocommit=False,
-#                                         autoflush=False,
-#                                         bind=engine))
-#
-
-#
-# def init_db():
-#     metadata.create_all(bind=engine)

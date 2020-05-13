@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from libs.database import Base
+from libs.database import Base, init_db, db_session
 
 class Message(Base):
     __tablename__ = 'message'
@@ -16,6 +16,29 @@ class Message(Base):
     def __repr__(self):
         return '<Message %r>' % (self.text)
 
+
+
+def delete_Message():
+    try:
+        num_rows_deleted = db_session.query(Message).delete()
+        db_session.commit()
+    except:
+        db_session.rollback()
+
+
+# delete_Users()
+init_db()
+
+
+
+
+
+
+
+
+
+
+
 # class Tag(Base):
 #     __tablename__ = 'tag'
 #     id = Column(Integer, primary_key=True)
@@ -23,8 +46,6 @@ class Message(Base):
 
     # message_id = Column(Integer, ForeignKey('message.id'), nullable=False)
     # message = relationship('Message', backref=backref('tags', lazy=True))
-
-
 
 
 # message = Flask(__name__)

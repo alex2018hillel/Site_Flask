@@ -1,18 +1,17 @@
 import BaseModel as BaseModel
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import asc, desc
 from libs.users import Users, get_password
 from libs.car import Cars
 from libs.message import Message
-from flask import Flask, render_template, request, url_for, render_template, jsonify, redirect, session, Blueprint, flash, g
+from flask import Flask, request, url_for, render_template, jsonify, redirect, flash
 import os
 import json
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 from pip._vendor import requests
 from libs.database import db_session
-from sqlalchemy import asc, desc
 from flask_httpauth import HTTPBasicAuth
-
 
 
 SECRET_KEY = 333
@@ -22,45 +21,34 @@ RESOURCE_DIR = os.path.join(BASE_FOLDER, "resources")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '12345'
-names = [["Mary", "../static/images/11.jpg", "../static/images/12.jpg", "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. ", "mnogobukv",789],
-         ["Supercat", "../static/images/21.jpg", "../static/images/22.jpg", "Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa mollis.", "mnogobukv", 459],
-         ["Kate", "../static/images/31.jpg", "../static/images/32.jpg", "mnogobukv mnogobukv mnogobukv mnogobukv mnogobukv mnogobukv mnogobukv mnogobukv mnogobukv", "mnogobukv"],
-         ["Name", "../static/images/41.jpg", "../static/images/42.jpg", "mnogobukv mnogobukv mnogobukv mnogobukv mnogobukv mnogobukv mnogobukv mnogobukv ", "mnogobukv", 573],
-         ["Name", "../static/images/51.jpg", "../static/images/52.jpg", "mnogobukv mnogobukv mnogobukv mnogobukv mnogobukv mnogobukv mnogobukv mnogobukv ", "mnogobukv", 456]]
-# users = {
-#     "kira": generate_password_hash("tropp1"),
-#     "susan": generate_password_hash("bye")
-# }
 sorts = ['sort_by_price', 'sort_by_name']
 
-
 ########################   verify_password   ########################
+
 auth = HTTPBasicAuth()
 @auth.verify_password
 def verify_password(username, hash_password):
     users = Users.get_users()
-    # pas = db_session.query(Users).filter_by(login=username).one()
-    # print(pas.password)
     if username in users and check_password_hash(get_password(username), hash_password):
         print(hash_password)
         print(username,get_password(username))
         return username
 
 ######################  remove db_session ###########################
+
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
 
+###########################  1 PAGE   ###############################
 
-###########################  1 PAGE   #################################
 @app.route('/', methods=['GET'])
 def index():
     sort = Cars.price
     return render_template('index.html', sorts=sorts, cars=db_session.query(Cars).order_by(sort))#(desc(sort))
-    #, messages=Message.query.order_by(sort), data0=users[0]["login"].strip()
 
+########################## page from_us #############################
 
-########################### page from_us ##############################
 def json_reader():
     with open("C:/Users/i5/PycharmProjects/Site060606/Site_Flask/resourses/response.json") as f:
         user_data = (json.loads(f.read()).get("payload"))
@@ -70,8 +58,8 @@ def json_reader():
 def from_us():
     return render_template('from_us.html', body = json_reader())
 
+##########################   sign_in   #############################
 
-##########################   sign_in   #################################
 @app.route('/sign_in')
 @auth.login_required
 def sign_in():
@@ -79,15 +67,7 @@ def sign_in():
     #$return "Hello, {}!"#.format(auth.current_user())
     return render_template('index.html', sorts=sorts, cars=db_session.query(Cars).order_by(sort))#(desc(sort))
 
-
-##########################   sign_up   #################################
-# @app.route('/sign_up')
-# @auth.login_required
-# def sign_up():
-#     # sort = Cars.price
-#     return "Hello, {}!"#.format(auth.current_user())
-# db.create_all()
-# db.session.commit()
+##########################   sign_up   #############################
 
 @app.route('/sign_up', methods=("GET", "POST"))
 def sign_up():
@@ -103,14 +83,12 @@ def sign_up():
             error = f"User {login} is already registered."
 
         if error is None:
-            #db_session.add(Users(login, generate_password_hash(password)))
             db_session.add(Users(login, generate_password_hash(password)))
             db_session.commit()
             return redirect(url_for("index"))
         flash(error)
 
     return render_template("sign_up.html")
-
 
 ##################  second page  #################################
 
@@ -168,12 +146,12 @@ def sort(name):
         message_sort = Message.id
     return render_template('add_message.html', sorts=sorts, messages=db_session.query(Message).order_by(message_sort))
 
+###############################################################
 
-###########################
 @app.route('/main', methods=['GET','POST'])
 def main():
     sort = Message.id
-    return render_template('resourses/Old/main.html', names=names)#,  messages=Message.query.order_by(sort)
+    return render_template('resourses/Old/main.html', )#,  messages=Message.query.order_by(sort), names=names
 
 
 @app.errorhandler(404)
@@ -182,7 +160,43 @@ def page_not_found(error):
         render_template('page_not_found.html'), 404
 
 #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&#
-#&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&#
+#&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  FINAL  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @app.route('/user/<username>')
 def show_user_profile(username):
@@ -261,7 +275,6 @@ def index_post():
 
 
 if __name__ == '__main__':
-    #parser()
     app.run(host='127.0.0.1', port=5001, debug=True)
 
 
@@ -272,7 +285,13 @@ if __name__ == '__main__':
 
 
 
-
+# @app.route('/sign_up')
+# @auth.login_required
+# def sign_up():
+#     # sort = Cars.price
+#     return "Hello, {}!"#.format(auth.current_user())
+# db.create_all()
+# db.session.commit()
 
 
 

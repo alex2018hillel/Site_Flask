@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+</head>
+<body>
+
+    <li class="ttr_menu_items_parent dropdown active"><a href="//sort/sort_by_data1" class="ttr_menu_items_parent_link_active"><span class="menuchildicon"></span>Сортировка  по data1
+        <hr class ="horiz_separator"/></a>
+    </li>
+
+
+    <div><form method="post" action="/sort/sort_by_data1">
+        <input type='submit' value="sort_by_data1">
+    </form>
+    </div>
+    <div><form method="post" action="/sort/sort_by_text">
+        <input type='submit' value="sort_by_text">
+    </form>
+    </div>
+
+<h2>Messages</h2>
+<form method="post" action="/add_message">
+    <input type="text" name="text">
+    <input type="text" name="tag">
+    <input type="text" name="data1">
+    <button type="submit">Add message</button>
+</form>
+
+<h3>Messages list</h3>
+{% for message in messages %}
+    <div>{{ message.id }}#
+        <b>{{ message.text }}</b>
+
+    {% for tag in message.tags %}
+    <b>#{{ tag.text }}</b>
+    <b>#{{ message.data1 }}</b>
+    </div>
+    {% endfor %}
+{% endfor %}
+
+         <div>{{ data0 }}#</div>
+
+{% block content %}
+    <div class="container">
+    <h1>user</h1>
+      {% for user in users %}
+        <ul id="user.username">
+          <li>
+              <span class="field-name">User:</span>
+              <span class="field-value">{{ user.username }}</span>
+          </li>
+          <li>
+              <span class="field-name">Email:</span>
+              <span class="field-value">{{ user.email }}</span>
+          </li>
+          <li>
+              <span class="field-name">Created:</span>
+              <span class="field-value">{{ user.created }}</span>
+          </li>
+          <li>
+              <span class="field-name">Bio:</span>
+              <span class="field-value">{{ user.bio }}</span>
+          </li>
+          <li>
+              <span class="field-name">Admin:</span>
+              <span class="field-value">{{ user.admin }}</span>
+          </li>
+        </ul>
+      {% endfor %}
+    </div>
+{% endblock %}
+</body>
+</html>

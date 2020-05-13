@@ -27,3 +27,8 @@ DB_URL = 'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' %POSTGRES
 # params for proxy
 PROXY_FILE_PATH ='/resourses/proxies.txt'
 # configs for crawler
+URL = 'https://www.autotrader.co.uk/car-search?sort=relevance&postcode=WC2N%205DU&radius=1500&make=TESLA&page=1'
+
+HEADERS = {
+    'user-agent' : 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36',
+    'accept' : '*/*'}

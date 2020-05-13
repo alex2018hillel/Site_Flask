@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-import re
+import re, json
 from elasticsearch import Elasticsearch
 es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
@@ -88,7 +88,6 @@ def record_to_json( file_name):
         str_price = "".join((re.findall(r'[0-9]{,3},[0-9]{,3}', str(pr))))
         price =27*int(str_price.replace(',', ''))
         list_price.append(price)
-        #print(price)
 
     # for n, l, f, p in zip(names_list, links, photos, list_price):
     #     to_json = {n:{'head': n, 'link': l, 'photo': f, 'price': p}}
@@ -106,8 +105,8 @@ def record_to_json( file_name):
         es.index(index='cars', id=i, body=to_json)
         i +=1
 
-    # with open(file_name, 'w') as f:
-    #     json.dump(full_json, f)
-    # with open(file_name) as f:
-    #     print(f.read())
-record_to_json( '2.txt')
+    with open(file_name, 'w') as f:
+        json.dump(full_json, f)
+    with open(file_name) as f:
+        print(f.read())
+record_to_json( 'UK.json')
