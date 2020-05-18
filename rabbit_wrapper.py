@@ -1,8 +1,7 @@
 import rabbitpy
 import json
 #RABBIT_URL = "amqp://guest:guest@localhost:5672/%2F"
-RABBIT_URL = "amqp://wnuahdex:Monf5SDy2aXkPiYreQSaqe56EF2AaUJQ@squid.rmq.cloudamqp.com/wnuahdex"
-
+from settings import (RABBIT_URL, URL)
 class RabbitQueue:
 
     def __init__(self, exchange_name, queue_name):
@@ -25,12 +24,21 @@ class RabbitQueue:
 
     def publish(self, msg:dict):
         m = rabbitpy.Message(self.channel, msg)
-        m.publish(self.exchange_name, self.routing_key)
+        m.publish(self.exchange_name, routing_key=self.routing_key)
 
     def consume_generator(self, threads=1):
         for msg in self.queue.consume(prefetch=threads):
+            data = msg.json()
+            if not data:
+                msg.ack()
+                break
             yield msg.json()
-            msg.ack()
+            #msg.ack()
+
+    def get_generator(self, exit_event):
+        while not exit_event.is_set():
+            msg = self.queue.get(acknowledge=True)
+            yield msg
 
     def count(self):
         return  len(self.queue)
@@ -39,11 +47,32 @@ class RabbitQueue:
         self.channel.close()
         self.connection.close()
 
-rq = RabbitQueue('test_exchange', 'test_queue_name')
-for i in range(100):
-    rq.publish({'message':f'text {i}'})
-for msg in rq.consume_generator():
-    print(msg)
-    break
+if __name__ == '__main__':
+    rq = RabbitQueue('test-exchange', 'test-queue')
 
-rq.close()
+    if rq.count() == 0:
+        for i in range(10):
+            full_url = URL + f'&page={i}'
+            rq.publish({'url': full_url})
+
+        rq.publish({})
+
+    from threading import Event
+    ex_ev = Event()
+
+    for raw_msg in rq.get_generator(ex_ev):
+        if not raw_msg:
+            break
+        print(raw_msg.json())
+        raw_msg.nack(requeue=False)
+
+    rq.close()
+
+# rq = RabbitQueue('test_exchange', 'test_queue_name')
+# for i in range(100):
+#     rq.publish({'message':f'text {i}'})
+# for msg in rq.consume_generator():
+#     print(msg)
+#     break
+#
+# rq.close()

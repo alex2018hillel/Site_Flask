@@ -1,17 +1,15 @@
-
 import rabbitpy
-
-
-from settings import RABITMQ_URL
-
-
+import json
+#RABBIT_URL = "amqp://guest:guest@localhost:5672/%2F"
+from settings import (RABBIT_URL, URL)
 class RabbitQueue:
+
     def __init__(self, exchange_name, queue_name):
         self.exchange_name = exchange_name
         self.queue_name = queue_name
         self.routing_key = queue_name
 
-        self.connection = rabbitpy.Connection(RABITMQ_URL)
+        self.connection = rabbitpy.Connection(RABBIT_URL)
         self.channel = self.connection.channel()
 
         self.exchange = rabbitpy.Exchange(
@@ -19,12 +17,12 @@ class RabbitQueue:
         self.exchange.declare()
 
         self.queue = rabbitpy.Queue(
-            self.channel, self.queue_name, durable=True)
+            self.channel, self.queue_name, durable = True)
         self.queue.declare()
 
         self.queue.bind(self.exchange_name, routing_key=self.routing_key)
 
-    def publish(self, msg: dict):
+    def publish(self, msg:dict):
         m = rabbitpy.Message(self.channel, msg)
         m.publish(self.exchange_name, routing_key=self.routing_key)
 
@@ -34,8 +32,8 @@ class RabbitQueue:
             if not data:
                 msg.ack()
                 break
-            yield data
-            # msg.ack()
+            yield msg.json()
+            #msg.ack()
 
     def get_generator(self, exit_event):
         while not exit_event.is_set():
@@ -43,19 +41,19 @@ class RabbitQueue:
             yield msg
 
     def count(self):
-        return len(self.queue)
+        return  len(self.queue)
 
     def close(self):
         self.channel.close()
         self.connection.close()
 
-
 if __name__ == '__main__':
     rq = RabbitQueue('test-exchange', 'test-queue')
 
     if rq.count() == 0:
-        for i in range(100):
-            rq.publish({'url': f'http://{i}'})
+        for i in range(10):
+            full_url = URL + f'&page={i}'
+            rq.publish({'url': full_url})
 
         rq.publish({})
 
@@ -69,3 +67,12 @@ if __name__ == '__main__':
         raw_msg.nack(requeue=False)
 
     rq.close()
+
+# rq = RabbitQueue('test_exchange', 'test_queue_name')
+# for i in range(100):
+#     rq.publish({'message':f'text {i}'})
+# for msg in rq.consume_generator():
+#     print(msg)
+#     break
+#
+# rq.close()

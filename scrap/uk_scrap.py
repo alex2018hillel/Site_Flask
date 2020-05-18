@@ -3,10 +3,10 @@ from libs.database import db_session
 from bs4 import BeautifulSoup
 import requests
 import re, json
-
+from settings import (URL)
 
 #URL = 'https://www.autotrader.co.uk/car-search?advertising-location=at_cars&search-target=usedcars&is-quick-search=TRUE&postcode=WC2N+5DU&make=TESLA&price-search-type=total-price'
-URL = 'https://www.autotrader.co.uk/car-search?sort=relevance&postcode=WC2N%205DU&radius=1500&make=TESLA&page=1'
+# URL = 'https://www.autotrader.co.uk/car-search?sort=relevance&postcode=WC2N%205DU&radius=1500&make=TESLA&page=1'
 
 HEADERS = {
     'user-agent' : 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36',
@@ -16,7 +16,7 @@ file_name = ("uk_cars" + ".json")
 full_json = {}
 request = requests.get(URL, headers=HEADERS).content
 soup = BeautifulSoup(request, 'html.parser')
-container = soup.select("li.search-page__result")
+# container = soup.select("li.search-page__result")
 
 
 def parser( file_name):

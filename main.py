@@ -19,6 +19,6 @@ def init_app_logger():
 if __name__ == '__main__':
     init_app_logger()
     with app.app_context():
-        import  app_routes
+        import  app_route
 
     app.run(host=FLASK_HOST, port=FLASK_PORT, debug=True)

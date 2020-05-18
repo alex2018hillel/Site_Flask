@@ -9,6 +9,7 @@ POSTGRES = {
     'host': 'localhost',
     'port': '5432',
 }
+
 # flask app
 RANDOM_STRING = '1324'#os.getenv("RANDOM_STRING", "random string")
 APP_NAME = "Suggestions Crawler"
@@ -22,13 +23,28 @@ DB_NAME = os.environ.get(
 )
 DB_URL = 'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' %POSTGRES
 
+
 # params for rabbit queue
+RABBIT_URL = "amqp://wnuahdex:Monf5SDy2aXkPiYreQSaqe56EF2AaUJQ@squid.rmq.cloudamqp.com/wnuahdex"
+CRAWLER_QUEUE_NAME = "crawl_pages"
+CRAWLER_EXCHANGE_NAME = "ex_crawl_pages"
+MAX_QUEUE_SIZE = 100
+
 
 # params for proxy
 PROXY_FILE_PATH ='/resourses/proxies.txt'
-# configs for crawler
-URL = 'https://www.autotrader.co.uk/car-search?sort=relevance&postcode=WC2N%205DU&radius=1500&make=TESLA&page=1'
 
+
+# configs for crawler
+URL = 'https://www.autotrader.co.uk/car-search?sort=relevance&postcode=WC2N%205DU&radius=1500&make=TESLA'
 HEADERS = {
     'user-agent' : 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36',
     'accept' : '*/*'}
+
+
+# configs for crawler
+DRIVER_PATH = "bin/chromedriver"  # path to driver binary
+IS_HEADLESS = True
+NUM_WORKERS = 5
+MAX_PAGES = 15
+PAGE_URL = "https://www.autotrader.co.uk/car-search?sort=relevance&postcode=WC2N%205DU&radius=1500&make=TESLA&page={num}"
