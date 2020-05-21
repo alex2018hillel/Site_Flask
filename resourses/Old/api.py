@@ -1,5 +1,5 @@
-from flask import jsonify, make_response, request, url_for
-from flask_restful import reqparse, abort
+from flask import Flask, jsonify, make_response, request, url_for
+from flask_restful import reqparse, abort, Api, Resource
 from flask_httpauth import HTTPBasicAuth
 # from flask_httpauth import HTTPDigestAuth
 # from flask_httpauth import HTTPTokenAuth
@@ -8,19 +8,22 @@ parser.add_argument("head")
 parser.add_argument("link")
 parser.add_argument("photo")
 parser.add_argument("price")
-from resourses.Old.app import app
 
+app = Flask(__name__)
+api = Api(app)
+app.config['SECRET_KEY'] = '123'
 auth = HTTPBasicAuth()
-
+# auth = HTTPDigestAuth()
+# auth = HTTPTokenAuth(scheme='Bearer')
 
 tokens = {
-    "secret-token-1": "alex",
-    "secret-token-2": "vovan"
+    "secret-token-1": "john",
+    "secret-token-2": "susan"
 }
 
 users = {
     "alex": "12345",
-    "vovan": "bye"
+    "susan": "bye"
 }
 
 cars = [
@@ -96,7 +99,11 @@ def make_public_task(car):
     return new_car
 
 
-
+@auth.get_password
+def get_password(username):
+    if username == 'miguel':
+        return '12345'
+    return None
 
 @auth.get_password
 def get_pw(username):
@@ -104,6 +111,15 @@ def get_pw(username):
         return users.get(username)
     return None
 
+# @auth.verify_token
+# def verify_token(token):
+#     if token in tokens:
+#         return tokens[token]
+#
+# @app.route('/')
+# @auth.login_required
+# def index():
+#     return "Hello, {}!".format(auth.current_user())
 
 @auth.error_handler
 def unauthorized():
@@ -127,19 +143,3 @@ curl http://localhost:5000//api/v1 -d "car=["head=5", "link=6", photo="7", "pric
 curl http://localhost:5000//api/v1/car1 -d "head=5", "link=6", photo="7", "price=8" -X PUT -v
 curl -i -X POST -H 'Content-Type: application/json' -d '{"data":{"head":"artist", "link":"Salvador Dali"}}' http://localhost:5000//api/v1/car1
 '''
-
-
-# app = Flask(__name__)
-# api = Api(app)
-# app.config['SECRET_KEY'] = '123'
-
-# @auth.verify_token
-# def verify_token(token):
-#     if token in tokens:
-#         return tokens[token]
-
-# @auth.get_password
-# def get_password(username):
-#     if username == 'miguel':
-#         return '12345'
-#     return None

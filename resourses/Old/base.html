@@ -44,7 +44,7 @@
             }
         });
     </script>
-    <script type="text/javascript" src="../static/tt_slideshow.js">
+    <script type="text/javascript" src="../../../tt_slideshow.js">
     </script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -53,7 +53,7 @@
             });
         });
     </script>
-    <script type="text/javascript" src="../static/bootstrap.min.js">
+    <script type="text/javascript" src="bootstrap.min.js">
     </script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -142,16 +142,16 @@
     <title>
         SiteFlask
     </title>
-    <link rel="stylesheet" href="../static/bootstrap.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="../../static/bootstrap.css" type="text/css" media="screen"/>
     <link rel="stylesheet"  href="{{ url_for( 'static', filename='style.css')}}" type="text/css" media="screen"/>
 
     <!--[if lte IE 8]>
     <link rel="stylesheet"  href="menuie.css" type="text/css" media="screen"/>
     <link rel="stylesheet"  href="vmenuie.css" type="text/css" media="screen"/>
     <![endif]-->
-    <script type="text/javascript" src="../static/prefixfree.min.js">
+    <script type="text/javascript" src="prefixfree.min.js">
     </script>
-    <script type="text/javascript" src="../static/totop.js">
+    <script type="text/javascript" src="../../../totop.js">
     </script>
     <!--[if IE 7]>
     <style type="text/css" media="screen">
@@ -167,13 +167,13 @@
 </head>
 
 <body class="Index">
-<a href="#" class="back-to-top"><img alt="Back to Top" src="../static/images/gototop.png"/></a>
+<a href="#" class="back-to-top"><img alt="Back to Top" src="../../static/images/gototop.png"/></a>
 <header id="ttr_header">
     <div id="ttr_header_inner">
         <div class="ttr_title_position">
             <h1 class="ttr_title_style ">
                 <a href="#">
-                    zero emission
+                    AВТОСАЛОН
                 </a>
             </h1>
         </div>
@@ -199,29 +199,55 @@
             </div>
             <div class="menu-center collapse navbar-collapse">
                 <ul class="ttr_menu_items nav navbar-nav nav-justified">
-                    <li class="ttr_menu_items_parent dropdown active"><a href="{{ url_for('index') }}" class="ttr_menu_items_parent_link_active"><span class="menuchildicon"></span>ukraine car
+                    <li class="ttr_menu_items_parent dropdown active"><a href="/" class="ttr_menu_items_parent_link_active"><span class="menuchildicon"></span>Home
                         <hr class ="horiz_separator"/></a>
                     </li>
                     <li class="ttr_menu_items_parent dropdown"><a href='/from_us' class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>About Us
                         <hr class ="horiz_separator"/></a>
                     </li>
-                    <li class="ttr_menu_items_parent dropdown"><a href="{{ url_for('old_car') }}" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>"Tasla"
+                    <li class="ttr_menu_items_parent dropdown"><a href="{{ url_for('old_cars', comm='sort_by_id') }}" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>Old cars
                         <hr class ="horiz_separator"/></a>
                     </li>
-                    <li class="ttr_menu_items_parent dropdown"><a href="{{ url_for('add_message') }}" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>add message
+                    <li class="ttr_menu_items_parent dropdown"><a href="#" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>Blog
                         <hr class ="horiz_separator"/></a>
                     </li>
-                    <li class="ttr_menu_items_parent dropdown"><a href="{{ url_for('sign_in') }}" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>sign in
+                    <li class="ttr_menu_items_parent dropdown"><a href="{{ url_for('login') }}" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>login
                         <hr class ="horiz_separator"/></a>
                     </li>
-                    <li class="ttr_menu_items_parent dropdown"><a href="{{ url_for('sign_up') }}" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>sign up</a>
+                    <li class="ttr_menu_items_parent dropdown"><a href="#" class="ttr_menu_items_parent_link"><span class="menuchildicon"></span>Contact</a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
 </nav>
-<!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+
+<div class="hero-head">
+    <nav class="navbar">
+        <div class="container">
+
+            <div id="navbarMenuHeroA" class="navbar-menu">
+                <div class="navbar-end">
+                    <a href="{{ url_for('main.index') }}" class="navbar-item">
+                        Home
+                    </a>
+                    <a href="{{ url_for('main.profile') }}" class="navbar-item">
+                        Profile
+                    </a>
+                    <a href="{{ url_for('auth.login') }}" class="navbar-item">
+                        Login
+                    </a>
+                    <a href="{{ url_for('auth.signup') }}" class="navbar-item">
+                        Sign Up
+                    </a>
+                    <a href="{{ url_for('auth.logout') }}" class="navbar-item">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
 
 
 {% block content %}

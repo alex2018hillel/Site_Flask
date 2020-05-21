@@ -1,7 +1,7 @@
 import rabbitpy
 import json
 #RABBIT_URL = "amqp://guest:guest@localhost:5672/%2F"
-from settings import (RABBIT_URL, URL)
+from settings import (RABITMQ_URL, URL)
 class RabbitQueue:
 
     def __init__(self, exchange_name, queue_name):
@@ -9,7 +9,7 @@ class RabbitQueue:
         self.queue_name = queue_name
         self.routing_key = queue_name
 
-        self.connection = rabbitpy.Connection(RABBIT_URL)
+        self.connection = rabbitpy.Connection(RABITMQ_URL)
         self.channel = self.connection.channel()
 
         self.exchange = rabbitpy.Exchange(

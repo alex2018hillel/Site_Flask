@@ -1,5 +1,3 @@
-
-
 import threading
 import signal
 
@@ -12,7 +10,7 @@ if __name__ == '__main__':
         exit_event.set()
 
     signal.signal(signal.SIGINT, call_stop)
+    signal.signal(signal.SIGTERM, call_stop)
 
-    #sg = CarGenerator(exit_event)
-    sg = CarGenerator()
+    sg = CarGenerator(exit_event)
     sg.run()

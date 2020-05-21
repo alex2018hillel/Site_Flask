@@ -203,7 +203,7 @@ def show_user_profile(username):
     with open("response.json") as f:
         user_data =("%s" % (json.loads(f.read()).get("payload")))
         #return "%s - %s" % (json.loads(f.read()).get("payload"))
-        return render_template('user.html', myfunction=json_reader(), user_json =user_data, u = 'User %s' % username)# 'User %s' % username
+        return render_template('user.html', myfunction=json_reader(), user_json =user_data, u ='User %s' % username)# 'User %s' % username
 
 
 @app.route('/api/save-image/')

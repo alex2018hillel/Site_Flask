@@ -16,20 +16,24 @@ APP_NAME = "Suggestions Crawler"
 FLASK_HOST = os.getenv("FLASK_HOST", 'localhost')
 FLASK_PORT = os.getenv("FLASK_PORT", 5000)
 
-# params for db (sqlite)
-DB_NAME = os.environ.get(
-    'DATABASE_URL',
-    f'sqlite:///{os.path.join(os.getcwd(), "db", "ships.sqlite3")}'
-)
+# params for db
+# DB_NAME = os.environ.get(
+#     'DATABASE_URL',
+#     'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' %POSTGRES
+# )
 DB_URL = 'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' %POSTGRES
 
 
 # params for rabbit queue
-RABBIT_URL = "amqp://wnuahdex:Monf5SDy2aXkPiYreQSaqe56EF2AaUJQ@squid.rmq.cloudamqp.com/wnuahdex"
-CRAWLER_QUEUE_NAME = "crawl_pages"
-CRAWLER_EXCHANGE_NAME = "ex_crawl_pages"
-MAX_QUEUE_SIZE = 100
-
+RABITMQ_URL = os.environ.get('RABITMQ_URL',
+                             "amqp://wnuahdex:Monf5SDy2aXkPiYreQSaqe56EF2AaUJQ@squid.rmq.cloudamqp.com/wnuahdex"
+                             )
+PAGE_URL = "https://www.autotrader.co.uk/car-search?sort=relevance&postcode=WC2N%205DU&radius=1500&make=TESLA&page={num}"
+PAGE_URL0 = "https://www.autotrader.co.uk/car-search?sort=relevance&postcode=WC2N%205DU&radius=1500&make=TESLA"
+CRAWLER_QUEUE_NAME = 'car-queue'
+CRAWLER_EXCHANGE_NAME = 'car-exchange'
+MAX_QUEUE_SIZE = 10
+MAX_PAGES = 15
 
 # params for proxy
 PROXY_FILE_PATH ='/resourses/proxies.txt'
@@ -45,6 +49,5 @@ HEADERS = {
 # configs for crawler
 DRIVER_PATH = "bin/chromedriver"  # path to driver binary
 IS_HEADLESS = True
-NUM_WORKERS = 5
-MAX_PAGES = 15
-PAGE_URL = "https://www.autotrader.co.uk/car-search?sort=relevance&postcode=WC2N%205DU&radius=1500&make=TESLA&page={num}"
+NUM_WORKERS = 1
+

@@ -1,8 +1,7 @@
 import signal
 import threading
 
-# from libs.crawler import VesselCrawler
-# from libs.crawler_lxml import VesselCrawlerLxml
+
 from libs.crawler_uk import CarCrawler
 
 if __name__ == '__main__':
@@ -13,6 +12,6 @@ if __name__ == '__main__':
 
     signal.signal(signal.SIGINT, call_stop)
 
-    # sg = VesselCrawler(exit_event)
+
     sg = CarCrawler(exit_event)
     sg.run()

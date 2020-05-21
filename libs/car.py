@@ -7,7 +7,7 @@ class Cars(Base):
     head = Column(String(1024), nullable=False)
     link = Column(String(1024), nullable=False)
     photo = Column(String(1024), nullable=False)
-    price = Column(String(1024), nullable=False)
+    price = Column(Integer, nullable=False)
 
 
     def __init__(self, head=None, link=None, photo=None, price=None):

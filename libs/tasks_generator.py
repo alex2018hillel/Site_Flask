@@ -2,17 +2,17 @@ from sqlalchemy import Column, Integer
 from libs.database import Base, init_db, db_session
 from libs.init_logger import init_logger
 from libs.rabbit_wrapper import RabbitQueue
+from libs.database import DbPg
 from settings import (CRAWLER_QUEUE_NAME, CRAWLER_EXCHANGE_NAME,
-                      PAGE_URL, MAX_PAGES, MAX_QUEUE_SIZE)
-import threading
+                      PAGE_URL, MAX_PAGES, MAX_QUEUE_SIZE)#
+
 
 class CarGenerator:
-    #def __init__(self, exit_event):
-    def __init__(self):
-        # self.exit_event = exit_event
-        self.exit_event = threading.Event()
+    def __init__(self, exit_event):
+        self.exit_event = exit_event
         self.log = init_logger('cars_url_generator')
         self.was_pages = {}
+        self.db = DbPg(self.log)
         self.rqueue = RabbitQueue(CRAWLER_EXCHANGE_NAME, CRAWLER_QUEUE_NAME)
         self.wait_queue()
         self.init_progress_table()
@@ -40,8 +40,8 @@ class CarGenerator:
             if self.was_pages.get(i):
                 continue
 
-            msg = {'url': PAGE_URL.format(num=i)}
-            print(msg)
+            msg = {'url': PAGE_URL.format(num=i), 'num':i}
+            print('run',msg)
 
             self.log.debug(f'[{i}]: queue size is: {self.rqueue.count()}')
             while self.rqueue.count() > MAX_QUEUE_SIZE:
@@ -57,7 +57,7 @@ class CarGenerator:
         delete_Pages()
         init_db()
 
-
+# run()
 class Pages(Base):
     __tablename__ = 'pages'
     id = Column(Integer, primary_key=True)
@@ -65,7 +65,7 @@ class Pages(Base):
 
 
     def __init__(self, page_num=None):
-        self.page_num = page_num.strip()
+        self.page_num = page_num
 
 
     def __repr__(self):

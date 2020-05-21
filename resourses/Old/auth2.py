@@ -1,19 +1,5 @@
-# from flask import make_response, jsonify
-# import HTTPBasicAuth
-# auth = HTTPBasicAuth()
-#
-# @auth.get_password
-# def get_password(username):
-#     if username == 'miguel':
-#         return 'python'
-#     return None
-#
-# @auth.error_handler
-# def unauthorized():
-#     return make_response(jsonify({'error': 'Unauthorized access'}), 401)
-
 import functools
-import db
+from resourses.Old import db
 from flask import Blueprint
 from flask import flash
 from flask import g
@@ -91,9 +77,7 @@ def register():
 
         flash(error)
 
-    #return render_template("auth/register.html")
-    return render_template("'index.html'")
-
+    return render_template("auth/register.html")
 
 def json_reader():
     with open("resourses/response.json") as f:
@@ -128,8 +112,8 @@ def login():
 
         flash(error)
 
-    return render_template("auth/login.html")
-    #return render_template('from_us.html', body = json_reader())
+    #return render_template("auth/login.html")
+    return render_template('from_us.html', body = json_reader())
 
 
 @bp.route("/logout")

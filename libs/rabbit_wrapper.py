@@ -1,7 +1,6 @@
 import rabbitpy
-import json
-#RABBIT_URL = "amqp://guest:guest@localhost:5672/%2F"
-from settings import (RABBIT_URL, URL)
+from settings import RABITMQ_URL
+
 class RabbitQueue:
 
     def __init__(self, exchange_name, queue_name):
@@ -9,7 +8,7 @@ class RabbitQueue:
         self.queue_name = queue_name
         self.routing_key = queue_name
 
-        self.connection = rabbitpy.Connection(RABBIT_URL)
+        self.connection = rabbitpy.Connection(RABITMQ_URL)
         self.channel = self.connection.channel()
 
         self.exchange = rabbitpy.Exchange(
@@ -32,8 +31,7 @@ class RabbitQueue:
             if not data:
                 msg.ack()
                 break
-            yield msg.json()
-            #msg.ack()
+            yield data
 
     def get_generator(self, exit_event):
         while not exit_event.is_set():
@@ -51,9 +49,8 @@ if __name__ == '__main__':
     rq = RabbitQueue('test-exchange', 'test-queue')
 
     if rq.count() == 0:
-        for i in range(10):
-            full_url = URL + f'&page={i}'
-            rq.publish({'url': full_url})
+        for i in range(50):
+            rq.publish({'url': f'https://{i}'})
 
         rq.publish({})
 
@@ -68,6 +65,13 @@ if __name__ == '__main__':
 
     rq.close()
 
+
+
+
+
+
+
+#RABBIT_URL = "amqp://guest:guest@localhost:5672/%2F"
 # rq = RabbitQueue('test_exchange', 'test_queue_name')
 # for i in range(100):
 #     rq.publish({'message':f'text {i}'})

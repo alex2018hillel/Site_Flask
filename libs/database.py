@@ -25,3 +25,8 @@ def init_db():
     # import libs.message
     Base.metadata.create_all(bind=engine)
 
+
+class DbPg:
+    def __init__(self, logger):
+        self.log = logger
+

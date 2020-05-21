@@ -1,11 +1,8 @@
-
 import heapq
 import time
 import logging
 from threading import Lock
-
 import requests
-
 from settings import PROXY_FILE_PATH
 
 
@@ -113,7 +110,7 @@ if __name__ == '__main__':
         print(i)
         np = next(pg)
         print(np)
-        # time.sleep(1)
+        time.sleep(1)
         p.back_proxy(np, 'ok' if i % 2 == 0 else 'ban')
 
     for p in p.ok_proxies + p.ban_proxies:
