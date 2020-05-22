@@ -1,5 +1,7 @@
+from threading import Thread
 import rabbitpy
 from settings import RABITMQ_URL
+
 
 class RabbitQueue:
 
@@ -25,18 +27,14 @@ class RabbitQueue:
         m = rabbitpy.Message(self.channel, msg)
         m.publish(self.exchange_name, routing_key=self.routing_key)
 
-    def consume_generator(self, threads=1):
-        for msg in self.queue.consume(prefetch=threads):
+    def consume(self, threads=2):
+        for msg in self.queue.consume():
             data = msg.json()
             if not data:
                 msg.ack()
+                print('break')
                 break
-            yield data
-
-    def get_generator(self, exit_event):
-        while not exit_event.is_set():
-            msg = self.queue.get(acknowledge=True)
-            yield msg
+            # print(data)
 
     def count(self):
         return  len(self.queue)
@@ -45,39 +43,24 @@ class RabbitQueue:
         self.channel.close()
         self.connection.close()
 
-if __name__ == '__main__':
-    rq = RabbitQueue('test-exchange', 'test-queue')
 
+rq = RabbitQueue('test5_exchange', 'test5_queue_name')
+
+def publish_thread(num):
     if rq.count() == 0:
         for i in range(50):
             rq.publish({'url': f'https://{i}'})
+    rq.publish({})
 
-        rq.publish({})
+def consume_thread():
+    rq.consume()
 
-    from threading import Event
-    ex_ev = Event()
+thread1 = Thread(target=publish_thread, args=( 2000,))
+thread2 = Thread(target=consume_thread)
 
-    for raw_msg in rq.get_generator(ex_ev):
-        if not raw_msg:
-            break
-        print(raw_msg.json())
-        raw_msg.nack(requeue=False)
+thread1.start()
+thread2.start()
+thread1.join()
+thread2.join()
 
-    rq.close()
-
-
-
-
-
-
-
-# RABBIT_URL = "amqp://guest:guest@localhost:5672/%2F"
-# rq = RabbitQueue('test4_exchange', 'test4_queue_name')
-# for i in range(100):
-#     rq.publish({'message':f'text {i}'})
-#     print(i)
-# for msg in rq.consume_generator():
-#     print(msg)
-#     break
-#
-# rq.close()
+rq.close()
